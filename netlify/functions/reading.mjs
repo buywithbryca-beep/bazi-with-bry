@@ -1,7 +1,8 @@
 // BaZi with Bry: quick overview (teaser) through Claude.
 // Needs two environment variables in Netlify (Site configuration > Environment variables):
 //   ANTHROPIC_API_KEY  your key from console.anthropic.com
-//   BRY_PASSCODE       the passcode people must type to use the button
+//   BRY_PASSCODE       one access code, or a list separated by commas (one per client),
+//                      e.g.  LION-ANNA, LION-RAJ, LION-MIKE   Delete a code to switch it off.
 // Optional: ANTHROPIC_MODEL (defaults to claude-sonnet-5)
 
 const SYSTEM = `You are the writer for "BaZi with Bry", a classical BaZi practice. You write a QUICK OVERVIEW: a short teaser reading that gives real value from the chart, then leaves the reader curious enough to request Bry's full in depth reading.
@@ -45,7 +46,10 @@ export default async (req) => {
   const key = Netlify.env.get('ANTHROPIC_API_KEY');
   const pass = Netlify.env.get('BRY_PASSCODE');
   if (!key || !pass) return new Response('The reading service is not set up yet.', { status: 503 });
-  if (!body || body.passcode !== pass) return new Response('Wrong passcode.', { status: 401 });
+  const codes = pass.split(/[,\n]/).map((c) => c.trim().toLowerCase()).filter(Boolean);
+  const given = String((body && body.passcode) || '').trim().toLowerCase();
+  if (!given || !codes.includes(given)) return new Response('That access code is not valid.', { status: 401 });
+  console.log('Quick overview requested with access code: ' + given);
 
   const chart = String(body.chart || '').slice(0, 20000);
   const quick = String(body.quick || '').slice(0, 6000);
