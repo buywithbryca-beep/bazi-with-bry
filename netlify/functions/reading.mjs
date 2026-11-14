@@ -4,6 +4,9 @@
 //   BRY_PASSCODE       one access code, or a list separated by commas (one per client),
 //                      e.g.  LION-ANNA, LION-RAJ, LION-MIKE   Delete a code to switch it off.
 // Optional: ANTHROPIC_MODEL (defaults to claude-sonnet-5)
+//           BRY_CODE_USES (how many overviews each code allows, defaults to 3)
+
+import { getStore } from '@netlify/blobs';
 
 const SYSTEM = `You are the writer for "BaZi with Bry", a classical BaZi practice. You write a QUICK OVERVIEW: a short teaser reading that gives real value from the chart, then leaves the reader curious enough to request Bry's full in depth reading.
 
@@ -49,7 +52,19 @@ export default async (req) => {
   const codes = pass.split(/[,\n]/).map((c) => c.trim().toLowerCase()).filter(Boolean);
   const given = String((body && body.passcode) || '').trim().toLowerCase();
   if (!given || !codes.includes(given)) return new Response('That access code is not valid.', { status: 401 });
-  console.log('Quick overview requested with access code: ' + given);
+  const limit = parseInt(Netlify.env.get('BRY_CODE_USES') || '3', 10) || 3;
+  let store = null, used = 0;
+  try {
+    store = getStore({ name: 'overview-codes', consistency: 'strong' });
+    used = Number(await store.get(given)) || 0;
+  } catch (err) {
+    console.error('Usage counter unavailable, allowing request', err);
+    store = null;
+  }
+  if (store && used >= limit) {
+    console.log('Access code ' + given + ' refused: already used ' + used + ' of ' + limit);
+    return new Response('This access code has already been used ' + limit + ' times. Tap "Request an in depth reading" below for Bry\'s full reading.', { status: 403 });
+  }
 
   const chart = String(body.chart || '').slice(0, 20000);
   const quick = String(body.quick || '').slice(0, 6000);
@@ -80,6 +95,11 @@ export default async (req) => {
     console.error('Anthropic error', upstream.status, detail.slice(0, 500));
     return new Response('The reading service returned an error (' + upstream.status + '). Try again in a minute.', { status: 502 });
   }
+
+  if (store) {
+    try { await store.set(given, String(used + 1)); } catch (err) { console.error('Could not save usage count', err); }
+  }
+  console.log('Quick overview: access code ' + given + ', use ' + (used + 1) + ' of ' + limit);
 
   // Turn Anthropic's event stream into plain text chunks for the page.
   const decoder = new TextDecoder();
