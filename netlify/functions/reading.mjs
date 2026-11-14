@@ -71,6 +71,7 @@ export default async (req) => {
   const year = String(body.year || '').slice(0, 8);
   if (!chart) return new Response('No chart data was sent.', { status: 400 });
 
+  const model = Netlify.env.get('ANTHROPIC_MODEL') || 'claude-sonnet-5';
   const upstream = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -79,8 +80,11 @@ export default async (req) => {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      model: Netlify.env.get('ANTHROPIC_MODEL') || 'claude-sonnet-5',
-      max_tokens: 1400,
+      model,
+      max_tokens: 2000,
+      // Sonnet 5 thinks by default, and thinking eats into max_tokens. Turn it off so the
+      // whole budget goes to the overview (Sonnet 5.5 uses between_tools for the same effect).
+      thinking: model.includes('sonnet-5-5') ? { type: 'between_tools' } : { type: 'disabled' },
       stream: true,
       system: SYSTEM,
       messages: [{
@@ -104,7 +108,7 @@ export default async (req) => {
   // Turn Anthropic's event stream into plain text chunks for the page.
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
-  let buffer = '';
+  let buffer = '', sent = 0, stopReason = '';
   const stream = new ReadableStream({
     async start(controller) {
       const reader = upstream.body.getReader();
@@ -122,7 +126,12 @@ export default async (req) => {
             try {
               const data = JSON.parse(line.slice(6));
               if (data.type === 'content_block_delta' && data.delta && data.delta.type === 'text_delta') {
+                sent += data.delta.text.length;
                 controller.enqueue(encoder.encode(data.delta.text));
+              } else if (data.type === 'message_delta' && data.delta && data.delta.stop_reason) {
+                stopReason = data.delta.stop_reason;
+              } else if (data.type === 'error') {
+                console.error('Anthropic stream error', JSON.stringify(data.error || data));
               }
             } catch { /* ignore keep-alive lines */ }
           }
@@ -130,6 +139,7 @@ export default async (req) => {
       } catch (err) {
         console.error('Stream error', err);
       }
+      console.log('Overview finished: ' + sent + ' characters, stop reason ' + (stopReason || 'unknown'));
       controller.close();
     }
   });
