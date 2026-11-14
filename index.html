@@ -381,7 +381,7 @@ textarea#copyfallback{width:100%;min-height:160px;margin-top:10px;background:var
       <div class="field">
         <label for="f-city">Birth place</label>
         <div class="combo">
-          <input type="text" id="f-city" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="city-list" placeholder="Type a city, e.g. Jalandhar" spellcheck="false">
+          <input type="text" id="f-city" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="city-list" placeholder="City, e.g. Jalandhar or San Juan, Phil" spellcheck="false">
           <ul id="city-list" role="listbox" hidden></ul>
         </div>
         <label class="check" style="margin-top:4px"><input type="checkbox" id="f-manual"><span>Enter longitude and UTC offset manually</span></label>
@@ -761,7 +761,8 @@ function renderHits(msg){
 }
 var searchSeq = 0;
 function searchCity(){
-  var q = normName(sel.value.split(',')[0]);
+  var parts = sel.value.split(','), q = normName(parts[0]), qc = normName(parts.slice(1).join(' '));
+  function ctry(r){ if(!qc) return true; return normName(countryName(r[1])).indexOf(qc) === 0 || r[1].toLowerCase() === qc || (r[2] || '').toLowerCase() === qc; }
   if(q.length < 2){ showList(false); return; }
   var k = /[a-z]/.test(q[0]) ? q[0] : '0', seq = ++searchSeq;
   renderHits('Searching...');
@@ -769,8 +770,8 @@ function searchCity(){
     if(seq !== searchSeq) return;
     if(!rows){ renderHits('City list could not load. Tick "Enter longitude and UTC offset manually" instead.'); return; }
     var starts = [], has = [];
-    for(var i = 0; i < rows.length && starts.length < 12; i++){ if(rows[i].key.indexOf(q) === 0) starts.push(rows[i]); }
-    if(starts.length < 12){ for(var j = 0; j < rows.length && starts.length + has.length < 12; j++){ var kk = rows[j].key; if(kk.indexOf(q) > 0 && kk.indexOf(q) < 40) has.push(rows[j]); } }
+    for(var i = 0; i < rows.length && starts.length < 12; i++){ if(rows[i].key.indexOf(q) === 0 && ctry(rows[i])) starts.push(rows[i]); }
+    if(starts.length < 12){ for(var j = 0; j < rows.length && starts.length + has.length < 12; j++){ var kk = rows[j].key; if(kk.indexOf(q) > 0 && kk.indexOf(q) < 40 && ctry(rows[j])) has.push(rows[j]); } }
     cityHits = starts.concat(has); cityActive = cityHits.length ? 0 : -1;
     if(!cityHits.length) renderHits('No match. Try a nearby larger city, or enter longitude manually.'); else renderHits();
   });
@@ -884,7 +885,7 @@ function render(){
 
   // vietnamese zodiac
   var VS = vietSign(c);
-  html += '<section class="panel sect"><div class="sect-h"><h2>Vietnamese zodiac: ' + (VS.yang?'Yang ':'Yin ') + VS.el + ' ' + VS.animal + '</h2><span class="zh">Con giáp</span><span class="aside">Lunar year ' + VS.lunarYear + ' <span class="zh">' + VS.gz + '</span></span></div>' +
+  html += '<section class="panel sect"><div class="sect-h"><h2>Vietnamese zodiac: ' + (VS.yang?'Yang ':'Yin ') + VS.el + ' ' + VS.animal + '</h2><span class="zh">Con giáp</span><span class="aside">Year pillar <span class="zh">' + VS.gz + '</span></span></div>' +
     vietHTML(VS) + '<p class="hint" style="margin-top:10px">' + esc(vietNote(VS)) + '</p></section>';
 
   // ten god strength + quick reading
@@ -1013,7 +1014,7 @@ function render(){
     '<p><b>Day and Hour Pillars</b> use local time. With true solar time on, the clock time is shifted by 4 minutes per degree of longitude from the time zone meridian, plus the equation of time. Daylight saving on the birth date is taken from the time zone database.</p>' +
     '<p><b>Luck Pillars</b> run forward for Yang year males and Yin year females, reverse otherwise. Start age is the distance to the nearest Jie term, where 3 days equal 1 year, computed to the minute.</p>' +
     '<p><b>Combinations</b> show the element traditionally attributed to them. This app follows the common convention that 午未 Six Harmony is attributed to Fire; some schools attribute it to Earth. A listed combination is never treated as a confirmed transformation.</p>' +
-    '<p><b>Vietnamese zodiac</b> follows the lunar year (Tết) and uses Buffalo and Cat in place of Ox and Rabbit. Animal emblems by game-icons.net, licensed CC BY 3.0.</p>' +
+    '<p><b>Vietnamese zodiac</b> turns at Li Chun, the same boundary as the BaZi Year Pillar, and uses Buffalo and Cat in place of Ox and Rabbit. Animal emblems by game-icons.net, licensed CC BY 3.0.</p>' +
     '<p><b>Strength</b> is a weighted count, not a verdict. Classical assessment still weighs season, rooting, transformations and the Luck Pillar in play.</p></section>';
 
   R.innerHTML = html;
@@ -1156,12 +1157,10 @@ function vnIcon(v, forPrint){
   return '<svg class="vn-svg" viewBox="0 0 512 512" role="img" aria-label="' + v.el + ' ' + v.animal + '"' + (forPrint ? ' width="64" height="64"' : '') + '>' + body + '</svg>';
 }
 function vietSign(c){
-  var i = c.input, lun = Solar.fromYmd(i.y, i.m, i.d).getLunar();
-  var g = lun.getYearGan(), z = lun.getYearZhi(), ly = lun.getYear();
+  // Locked convention: the Vietnamese Zodiac year turns at Li Chun (Sun at 315 degrees), the same boundary as the BaZi Year Pillar.
+  var yp = c.pillars[3], g = yp.stem, z = yp.branch;
   var animal = VN_ANIMALS[E.BRANCHES.indexOf(z)], el = E.stemEl(g), yang = E.STEMS.indexOf(g) % 2 === 0;
-  var baziAnimal = c.pillars[3].animal, baziVn = VN_ANIMALS[E.BRANCHES.indexOf(c.pillars[3].branch)];
-  return {animal: animal, el: el, yang: yang, gz: g + z, lunarYear: ly, traits: VN_TRAITS[animal], twist: VN_ELEMENT[animal][el],
-    differs: baziVn !== animal || E.stemEl(c.pillars[3].stem) !== el, baziVn: baziVn, baziEl: c.pillars[3].stemEl};
+  return {animal: animal, el: el, yang: yang, gz: g + z, traits: VN_TRAITS[animal], twist: VN_ELEMENT[animal][el]};
 }
 function vietHTML(v, forPrint){
   var cls = '';
@@ -1171,7 +1170,7 @@ function vietHTML(v, forPrint){
     '<div class="' + cls + 'vn-twist"><b>The ' + v.el + ' twist:</b> ' + esc(v.twist[0]) + '. Flip side: ' + esc(v.twist[1].charAt(0).toLowerCase() + v.twist[1].slice(1)) + '.</div></div></div>';
 }
 function vietNote(v){
-  return 'Vietnamese years turn at Lunar New Year (Tết); lunar year ' + v.lunarYear + ' ' + v.gz + '.' + (v.differs ? ' This birth falls between Li Chun and Tết, so the BaZi Year Pillar reads ' + v.baziEl + ' ' + v.baziVn + ' while the Vietnamese sign is ' + v.el + ' ' + v.animal + '.' : '');
+  return 'Year boundary: Li Chun (Start of Spring, Sun at 315 degrees), the same moment that sets the BaZi Year Pillar. Year pillar ' + v.gz + '.';
 }
 
 /* ---------- Ten God strength chart ---------- */
@@ -1305,7 +1304,7 @@ var ZR_TEXT = {
   trine:{label:'Best friend year', tone:'good', text:'The year\'s animal is in your trine group, so the general climate tends to cooperate. A good year to push plans forward.'},
   secret:{label:'Secret friend year', tone:'good', text:'Your closest single ally sign rules the year, which tends to bring support and goodwill when you ask for it.'},
   clash:{label:'Clash year', tone:'hard', text:'The year\'s animal sits directly opposite yours, the most friction heavy pairing. Expect more movement: changed plans, travel, moves or shakeups. Stay flexible and avoid forcing things.'},
-  neutral:{label:'Neutral year', tone:'neutral', text:'No built in ease or friction from the signs themselves. How it plays out comes down to the chart and your choices.'}
+  neutral:{label:'Neutral / No Major Relationship Identified', tone:'neutral', text:'No built in ease or friction from the signs themselves. How it plays out comes down to the chart and your choices.'}
 };
 function signRelation(mine, yr){
   if(mine === yr) return 'own';
@@ -1325,8 +1324,8 @@ function quickReading(c, T, S){
   };
   var yAnimalVn = VN_ANIMALS[E.BRANCHES.indexOf(T.year.branch)];
   var cnMine = VN_ANIMALS[E.BRANCHES.indexOf(c.pillars[3].branch)];
-  var signs = [{system:'Chinese (BaZi year, from Li Chun)', mine:cnMine, el:c.pillars[3].stemEl}];
-  if(V.animal !== cnMine) signs.push({system:'Vietnamese (lunar year, from Tết)', mine:V.animal, el:V.el});
+  var signs = [{system:'Chinese', mine:cnMine, el:c.pillars[3].stemEl}];
+  if(V.animal !== cnMine) signs.push({system:'Vietnamese', mine:V.animal, el:V.el});
   else signs[0].system = 'Chinese and Vietnamese';
   Q.signs = signs.map(function(sg){ var rel = signRelation(sg.mine, yAnimalVn); return {system:sg.system, mine:sg.el + ' ' + sg.mine, yearAnimal:T.year.stemEl + ' ' + yAnimalVn, rel:rel, label:ZR_TEXT[rel].label, tone:ZR_TEXT[rel].tone, text:ZR_TEXT[rel].text}; });
   Q.yearGods = {stem:{god:T.year.stemGod, text:YEAR_GOD[T.year.stemGod]}, branch:{god:T.year.branchGod, text:YEAR_GOD[T.year.branchGod]}};
@@ -1591,7 +1590,7 @@ function reportBlocks(){
   B.push({html: '<h2>Method</h2><div class="rp-method">' +
     '<p>Year and Month Pillars change at the exact moment of the solar terms (Li Chun for the year, each Jie for the month). Day and Hour Pillars use local time' + (i.trueSolar ? ', corrected to true solar time for longitude and the equation of time' : '') + '. Month start dates are given in China time (UTC+8).</p>' +
     '<p>Luck Pillars run forward for Yang year males and Yin year females, reverse otherwise, with the start age computed to the minute (3 days equal 1 year).</p>' +
-    '<p>Strength is a weighted first pass, not a final verdict. Combinations are listed with their traditionally attributed element (午未 is attributed to Fire; some schools use Earth) and are not treated as confirmed transformations.</p><p>Vietnamese zodiac follows the lunar year (Tết). Animal emblems by game-icons.net (CC BY 3.0).</p></div>'});
+    '<p>Strength is a weighted first pass, not a final verdict. Combinations are listed with their traditionally attributed element (午未 is attributed to Fire; some schools use Earth) and are not treated as confirmed transformations.</p><p>Vietnamese zodiac turns at Li Chun, the same boundary as the BaZi Year Pillar. Animal emblems by game-icons.net (CC BY 3.0).</p></div>'});
   var n = 0;
   B.forEach(function(b){
     if(b.html) b.html = b.html.replace(/<h2>\d+\. /, function(){ n++; return '<h2>' + n + '. '; });
@@ -1712,7 +1711,7 @@ function chartText(){
   out.push('Roots: ' + (c.roots.length ? c.roots.map(function(r){ return r.pillar + ' ' + r.branch + ' ' + r.qi + ' qi ' + r.stem; }).join('; ') : 'none'));
   out.push('Void: ' + c.voids.join(' '));
   var VT = vietSign(c);
-  out.push('Vietnamese zodiac: ' + (VT.yang?'Yang ':'Yin ') + VT.el + ' ' + VT.animal + ' (lunar year ' + VT.lunarYear + ' ' + VT.gz + ')' + (VT.differs ? '; BaZi Year Pillar reads ' + VT.baziEl + ' ' + VT.baziVn + ' because the birth falls between Li Chun and Tet' : ''));
+  out.push('Vietnamese zodiac: ' + (VT.yang?'Yang ':'Yin ') + VT.el + ' ' + VT.animal + ' (year pillar ' + VT.gz + ', year boundary Li Chun)');
   out.push('  Good side: ' + VT.traits.pros.join('; '));
   out.push('  Not so good side: ' + VT.traits.cons.join('; '));
   out.push('  ' + VT.el + ' twist: ' + VT.twist[0] + '; flip side: ' + VT.twist[1]);
