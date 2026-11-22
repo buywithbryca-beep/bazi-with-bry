@@ -908,6 +908,8 @@ function render(){
     '<div class="timeline-note mono">' + (inp.trueSolar && inp.lon!==null ?
        'True solar time ' + c.time.local + '  (longitude ' + (c.time.lonCorr>=0?'+':'') + c.time.lonCorr.toFixed(1) + ' min, equation of time ' + (c.time.eot>=0?'+':'') + c.time.eot.toFixed(1) + ' min)' :
        'Local clock time used for Day and Hour Pillars: ' + c.time.local) +
+       (inp.trueSolar && inp.lon!==null && inp.timeKnown ?
+       '<div style="margin:.5rem 0;padding:.5rem .7rem;border:1px solid var(--gold,#c9a24a);border-radius:6px;font-weight:600">True solar time = ' + c.time.local.slice(11) + (c.time.local.slice(0,10) !== (inp.y + '-' + E.pad(inp.m) + '-' + E.pad(inp.d)) ? ' on ' + c.time.local.slice(0,10) : '') + '. If using another app, make sure this is the time you enter.</div>' : '') +
        '<br>Birth instant in UTC: ' + c.time.utc + '. Month Pillar governed by the preceding Jie, ' + (TERMS[c.time.prevJie]||c.time.prevJie) + ' ' + c.time.prevJie + ', at ' + c.time.prevJieUtc + ' UTC.</div>' +
     '</div></div></section>';
 
