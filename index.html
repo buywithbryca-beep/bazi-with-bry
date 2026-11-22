@@ -424,7 +424,9 @@ textarea#copyfallback{width:100%;min-height:160px;margin-top:10px;background:var
         <div class="field"><label for="f-off">UTC offset (hrs)</label><input type="number" id="f-off" step="0.25" min="-12" max="14" placeholder="-7"></div>
       </div>
       <p class="hint" id="tzhint"></p>
-      <label class="check"><input type="checkbox" id="f-solar" checked><span>Use true solar time<small>Corrects clock time for longitude and the equation of time. Affects Day and Hour Pillars.</small></span></label>
+      <input type="hidden" id="f-solar">
+      <div class="field"><label for="f-status">Birth time status</label><select id="f-status"><option value="recorded">Recorded (birth certificate or hospital record)</option><option value="reported" selected>Reported (from the person or family)</option><option value="estimated">Estimated</option><option value="rectified">Rectified</option></select></div>
+      <p class="hint">Fixed convention: the Hour Pillar uses the original clock time exactly as recorded, with no daylight saving, UTC or solar time correction. Year and Month Pillars use the exact solar terms.</p>
       <label class="check"><input type="checkbox" id="f-zi" checked><span>New day starts at 23:00<small>Traditional Zi hour rule. Untick to keep the same day until midnight.</small></span></label>
       <button type="submit" class="btn primary">Calculate chart</button>
       <div class="divider"></div>
@@ -734,6 +736,37 @@ var BZ = (function () {
       lonCorr: lonCorr, eot: eot, totalShift: inp.trueSolar ? lonCorr + eot : 0
     };
 
+    /* Fixed Convention (ERA): one original local birth time, two independent engines.
+       Jyotish: historical zone and DST -> UTC. BaZi hour: original clock time, no correction. */
+    var clockOk = inp.timeKnown;
+    var offAbs = Math.abs(inp.offsetMin);
+    tl.fields = {
+      birth_local_datetime: inp.y + '-' + pad(inp.m) + '-' + pad(inp.d) + ' ' + (clockOk ? pad(inp.h) + ':' + pad(inp.mi) : 'time unknown'),
+      birth_timezone: inp.tz || ('UTC' + (inp.offsetMin < 0 ? '-' : '+') + pad(Math.floor(offAbs / 60)) + ':' + pad(offAbs % 60)),
+      birth_utc_offset: 'UTC' + (inp.offsetMin < 0 ? '-' : '+') + pad(Math.floor(offAbs / 60)) + ':' + pad(offAbs % 60),
+      birth_utc_datetime: tl.utc,
+      bazi_hour_clock_time: clockOk ? pad(inp.h) + ':' + pad(inp.mi) : null,
+      birth_time_status: inp.timeStatus || (clockOk ? 'reported' : 'unknown')
+    };
+    tl.provisional = tl.fields.birth_time_status === 'rectified' || tl.fields.birth_time_status === 'estimated';
+    var chk = [];
+    chk.push({ n: 1, ok: utcMs === Date.UTC(inp.y, inp.m - 1, inp.d, h, mi) - inp.offsetMin * 60000,
+      txt: 'Jyotish moment is the original clock time converted with the historical UTC offset (' + tl.fields.birth_utc_offset + ')' });
+    var clockBranch = clockOk ? BRANCHES[Math.floor(((inp.h + 1) % 24) / 2)] : null;
+    chk.push({ n: 2, ok: !clockOk || (!inp.trueSolar && gz.hour.charAt(1) === clockBranch),
+      txt: clockOk ? 'Hour Branch taken from the original clock time ' + tl.fields.bazi_hour_clock_time + ' with no DST, UTC or solar correction' : 'Hour unknown, no Hour Branch' });
+    chk.push({ n: 3, ok: gz.year === absEC.getYear() && gz.month === absEC.getMonth(),
+      txt: 'Year and Month Pillars from the exact solar term moment (Li Chun, Jie)' });
+    var hs = clockOk ? STEMS[((si(gz.day.charAt(0)) % 5) * 2 + bi(gz.hour.charAt(1))) % 10] : null;
+    chk.push({ n: 4, ok: !clockOk || gz.hour.charAt(0) === hs,
+      txt: 'Day Pillar and Hour Stem follow one day boundary (' + ((inp.ziSect || 1) === 1 ? '23:00 Zi hour' : 'midnight') + ')' });
+    chk.push({ n: 5, ok: true,
+      txt: 'Birth time status: ' + tl.fields.birth_time_status + (tl.provisional ? ', labelled provisional' : '') });
+    chk.push({ n: 6, ok: inp.trueSolar || !clockOk || (lp.y === inp.y && lp.m === inp.m && lp.d === inp.d && lp.h === inp.h && lp.mi === inp.mi),
+      txt: 'BaZi hour depends only on the clock time field, not on the Jyotish UTC value' });
+    tl.checks = chk;
+    tl.valid = chk.every(function (c) { return c.ok; });
+
     return {
       input: inp, pillars: pillars, dm: dm, dmEl: dmEl, dmYang: stemYang(dm), dmPy: STEM_PY[si(dm)],
       elScore: elScore, elTotal: total, elCount: elCount, godScore: godScore, support: support, ratio: ratio, verdict: verdict,
@@ -874,7 +907,7 @@ function readInput(){
     try { off = E.tzOffsetMin(c.tz, p[0], p[1], p[2], h, mi); } catch(e){ return {error:'This browser could not look up the time zone. Choose Custom and enter the UTC offset.'}; }
   }
   return {y:p[0], m:p[1], d:p[2], h:h, mi:mi, timeKnown:known, gender:gender, offsetMin:off, lon:lon,
-    trueSolar:$('f-solar').checked, ziSect:$('f-zi').checked?1:2, name:$('f-name').value.trim(), place:placeLabel, placeObj: place};
+    trueSolar:false, tz:(place && !$('f-manual').checked ? place.tz : null), timeStatus: known ? $('f-status').value : 'unknown', ziSect:$('f-zi').checked?1:2, name:$('f-name').value.trim(), place:placeLabel, placeObj: place};
 }
 function fmtOff(m){ var s = m<0?'-':'+'; m=Math.abs(m); return s + Math.floor(m/60) + (m%60? ':' + E.pad(m%60) : ''); }
 function updateHint(){
@@ -905,11 +938,10 @@ function render(){
       '<span class="chip">Year animal <b>' + (yp.stemYang?'Yang ':'Yin ') + yp.stemEl + ' ' + yp.animal + '</b></span>' +
       '<span class="chip">Empty spots (Void) <b class="zh">' + c.voids.join(' ') + '</b></span>' +
     '</div>' +
-    '<div class="timeline-note mono">' + (inp.trueSolar && inp.lon!==null ?
-       'True solar time ' + c.time.local + '  (longitude ' + (c.time.lonCorr>=0?'+':'') + c.time.lonCorr.toFixed(1) + ' min, equation of time ' + (c.time.eot>=0?'+':'') + c.time.eot.toFixed(1) + ' min)' :
-       'Local clock time used for Day and Hour Pillars: ' + c.time.local) +
-       (inp.trueSolar && inp.lon!==null && inp.timeKnown ?
-       '<div style="margin:.5rem 0;padding:.5rem .7rem;border:1px solid var(--gold,#c9a24a);border-radius:6px;font-weight:600">True solar time = ' + c.time.local.slice(11) + (c.time.local.slice(0,10) !== (inp.y + '-' + E.pad(inp.m) + '-' + E.pad(inp.d)) ? ' on ' + c.time.local.slice(0,10) : '') + '. If using another app, make sure this is the time you enter.</div>' : '') +
+    '<div class="timeline-note mono">' + (c.time.valid ? '' : '<div style="margin:.5rem 0;padding:.5rem .7rem;border:2px solid #b3261e;border-radius:6px;font-weight:700;color:#b3261e">Validation failed: ' + c.time.checks.filter(function(k){return !k.ok;}).map(function(k){return k.n + '. ' + k.txt;}).join('; ') + '. Do not use this chart.</div>') +
+       (inp.timeKnown ? '<div style="margin:.5rem 0;padding:.5rem .7rem;border:1px solid var(--gold,#c9a24a);border-radius:6px;font-weight:600">BaZi hour clock time = ' + c.time.fields.bazi_hour_clock_time + ', as recorded. If using another app, enter this exact clock time and switch off any daylight saving or true solar time correction.</div>' : '') +
+       (c.time.provisional ? '<div style="margin:.5rem 0;font-weight:600">Birth time status: ' + c.time.fields.birth_time_status + '. Provisional unless independently verified.</div>' : '') +
+       'Clock time used for Day and Hour Pillars: ' + c.time.local + ' ' +
        '<br>Birth instant in UTC: ' + c.time.utc + '. Month Pillar governed by the preceding Jie, ' + (TERMS[c.time.prevJie]||c.time.prevJie) + ' ' + c.time.prevJie + ', at ' + c.time.prevJieUtc + ' UTC.</div>' +
     '</div></div></section>';
 
@@ -1058,7 +1090,7 @@ function render(){
     '<p class="hint" style="margin-top:8px">An A4 report of the chart, Luck Pillars and the timing outlook for ' + (state.focusYear || currentBaziYear()) + '. To report on another year, change the Focus year in the Timing outlook first.</p><div id="fbwrap"></div></section>';
   html += '<section class="panel sect notes"><div class="sect-h"><h2 style="color:var(--ink)">Method</h2></div>' +
     '<p><b>Year and Month Pillars</b> change at the exact moment of the solar terms (Li Chun for the year, each Jie term for the month), computed from the birth moment in universal time.</p>' +
-    '<p><b>Day and Hour Pillars</b> use local time. With true solar time on, the clock time is shifted by 4 minutes per degree of longitude from the time zone meridian, plus the equation of time. Daylight saving on the birth date is taken from the time zone database.</p>' +
+    '<p><b>Day and Hour Pillars</b> use the original local clock time exactly as recorded, with no daylight saving removal, UTC conversion, longitude or true solar time correction (fixed convention). The historical UTC offset, including daylight saving, is used only to find the exact moment for the Year and Month solar terms.</p>' +
     '<p><b>Luck Pillars</b> run forward for Yang year males and Yin year females, reverse otherwise. Start age is the distance to the nearest Jie term, where 3 days equal 1 year, computed to the minute.</p>' +
     '<p><b>Combinations</b> show the element traditionally attributed to them. This app follows the common convention that 午未 Six Harmony is attributed to Fire; some schools attribute it to Earth. A listed combination is never treated as a confirmed transformation.</p>' +
     '<p><b>Vietnamese zodiac</b> turns at Li Chun, the same boundary as the BaZi Year Pillar, and uses Buffalo and Cat in place of Ox and Rabbit. Animal emblems by game-icons.net, licensed CC BY 3.0.</p>' +
@@ -1600,7 +1632,7 @@ function reportBlocks(){
     '<tr><th>Name</th><td>' + esc(i.name || 'Not given') + '</td><th>Gender</th><td>' + (i.gender==='M'?'Male':'Female') + '</td></tr>' +
     '<tr><th>Birth date</th><td>' + i.y + '-' + E.pad(i.m) + '-' + E.pad(i.d) + '</td><th>Clock time</th><td>' + (i.timeKnown ? E.pad(i.h) + ':' + E.pad(i.mi) : 'Unknown') + '</td></tr>' +
     '<tr><th>Birth place</th><td>' + esc(i.place) + '</td><th>UTC offset</th><td>UTC' + fmtOff(i.offsetMin) + '</td></tr>' +
-    '<tr><th>True solar time</th><td>' + (i.trueSolar && i.lon!==null ? c.time.local + ' (' + (c.time.lonCorr>=0?'+':'') + c.time.lonCorr.toFixed(1) + ' min longitude, ' + (c.time.eot>=0?'+':'') + c.time.eot.toFixed(1) + ' min equation of time)' : 'Not applied') + '</td><th>Day change</th><td>' + (i.ziSect===1 ? '23:00 (Zi hour)' : 'Midnight') + '</td></tr>' +
+    '<tr><th>BaZi hour clock time</th><td>' + (c.time.fields.bazi_hour_clock_time || 'Unknown') + ' (no DST or solar correction)</td><th>Day change</th><td>' + (i.ziSect===1 ? '23:00 (Zi hour)' : 'Midnight') + '</td></tr>' +
     '<tr><th>Birth instant</th><td>' + c.time.utc + ' UTC</td><th>Governing Jie</th><td>' + (TERMS[c.time.prevJie]||c.time.prevJie) + ' ' + c.time.prevJie + ', ' + c.time.prevJieUtc + ' UTC</td></tr>' +
     '</tbody></table>'});
 
@@ -1687,7 +1719,7 @@ function reportBlocks(){
     })}});
 
   B.push({html: '<h2>Method</h2><div class="rp-method">' +
-    '<p>Year and Month Pillars change at the exact moment of the solar terms (Li Chun for the year, each Jie for the month). Day and Hour Pillars use local time' + (i.trueSolar ? ', corrected to true solar time for longitude and the equation of time' : '') + '. Month start dates are given in China time (UTC+8).</p>' +
+    '<p>Year and Month Pillars change at the exact moment of the solar terms (Li Chun for the year, each Jie for the month). Day and Hour Pillars use the original local clock time with no correction. Month start dates are given in China time (UTC+8).</p>' +
     '<p>Luck Pillars run forward for Yang year males and Yin year females, reverse otherwise, with the start age computed to the minute (3 days equal 1 year).</p>' +
     '<p>Strength is a weighted first pass, not a final verdict. Combinations are listed with their traditionally attributed element (午未 is attributed to Fire; some schools use Earth) and are not treated as confirmed transformations.</p><p>Vietnamese zodiac turns at Li Chun, the same boundary as the BaZi Year Pillar. Animal emblems by game-icons.net (CC BY 3.0).</p></div>'});
   var n = 0;
@@ -1796,7 +1828,7 @@ function chartText(){
   var c = state.chart, i = c.input, out = [];
   out.push('BAZI CHART' + (i.name? ': ' + i.name : ''));
   out.push('Born ' + i.y + '-' + E.pad(i.m) + '-' + E.pad(i.d) + (i.timeKnown? ' ' + E.pad(i.h)+':'+E.pad(i.mi) : ' (time unknown)') + ', ' + i.place + ', UTC' + fmtOff(i.offsetMin) + ', ' + (i.gender==='M'?'Male':'Female'));
-  if(i.trueSolar && i.lon!==null) out.push('True solar time: ' + c.time.local);
+  out.push('BaZi hour clock time: ' + (c.time.fields.bazi_hour_clock_time || 'unknown') + ' (no correction)'); out.push('Birth time status: ' + c.time.fields.birth_time_status);
   out.push('Day change rule: ' + (i.ziSect===1?'23:00':'midnight'));
   out.push('');
   out.push('Pillar | Stem (god) | Branch | Hidden stems | DM stage | Na Yin');
@@ -1858,7 +1890,7 @@ function fillSaved(){
 $('b-save').onclick = function(){
   var r = readInput(); if(r.error) return;
   var a = loadSaved();
-  a.push({name:r.name, date:fdate.value, time:$('f-time').value, unknown:!r.timeKnown, gender:r.gender, city:$('f-manual').checked ? 'custom' : place, lon:$('f-lon').value, off:$('f-off').value, solar:r.trueSolar, zi:r.ziSect===1});
+  a.push({name:r.name, date:fdate.value, time:$('f-time').value, unknown:!r.timeKnown, gender:r.gender, city:$('f-manual').checked ? 'custom' : place, lon:$('f-lon').value, off:$('f-off').value, status:$('f-status').value, zi:r.ziSect===1});
   if(storeSaved(a)) fillSaved();
 };
 $('b-del').onclick = function(){ var v = $('f-saved').value; if(v==='') return; var a = loadSaved(); a.splice(+v,1); storeSaved(a); fillSaved(); };
@@ -1866,7 +1898,7 @@ $('f-saved').onchange = function(){
   var v = this.value; if(v==='') return; var x = loadSaved()[+v]; if(!x) return;
   $('f-name').value = x.name||''; fdate.value = x.date; $('f-time').value = x.time||''; $('f-unknown').checked = !!x.unknown; $('f-time').disabled = !!x.unknown;
   setGender(x.gender); var man = x.city === 'custom' || typeof x.city !== 'object'; $('f-manual').checked = man; $('custom').hidden = !man; sel.disabled = man; if(!man){ place = x.city; sel.value = place.label; } else { sel.value = ''; } $('f-lon').value = x.lon||''; $('f-off').value = x.off||'';
-  $('f-solar').checked = x.solar; $('f-zi').checked = x.zi; state.example = false; run();
+  $('f-status').value = x.status || 'reported'; $('f-zi').checked = x.zi; state.example = false; run();
 };
 
 function run(){
@@ -1900,6 +1932,7 @@ function openFromLink(){
   $('f-name').value = q.name || ''; fdate.value = q.date;
   var unk = q.u === '1' || !q.time; $('f-unknown').checked = unk; $('f-time').disabled = unk; $('f-time').value = unk ? '' : q.time;
   setGender(q.g === 'F' ? 'F' : 'M');
+  if(/^(recorded|reported|estimated|rectified)$/.test(q.st || '')) $('f-status').value = q.st;
   place = {label: q.city || 'Birth place', lon: lon, tz: q.tz};
   $('f-manual').checked = false; $('custom').hidden = true; sel.disabled = false; sel.value = place.label;
   state.example = false; updateHint(); run();
