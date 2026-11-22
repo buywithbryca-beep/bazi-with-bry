@@ -211,6 +211,7 @@ textarea#copyfallback{width:100%;min-height:160px;margin-top:10px;background:var
 @media (max-width:860px){.qgrid{grid-template-columns:1fr}}
 .tgs{display:flex;flex-direction:column;gap:6px;font-size:13px}
 .tgs-head,.tgs-row{display:grid;grid-template-columns:minmax(178px,1.4fr) 1fr 1fr;gap:8px;align-items:center}
+.tgs3 .tgs-head,.tgs3 .tgs-row{grid-template-columns:minmax(178px,1.4fr) 1fr 1fr 1fr}
 .tgs-head span{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:center}
 .tgs-name b{font-size:16px;margin-right:2px}
 .tgs-zh{color:var(--muted);font-size:12px}
@@ -970,7 +971,7 @@ function render(){
   for(var yq = c.input.y; yq <= c.input.y + 100; yq++) qOpts += '<option value="' + yq + '"' + (yq===fyQ?' selected':'') + '>' + yq + ' ' + E.yearGanzhi(yq) + (yq===cbyQ?' (current)':'') + '</option>';
   html += '<section class="panel sect" id="quick"><div class="sect-h"><h2>Reading for ' + fyQ + '</h2><span class="zh">十神 流年</span><span class="aside"><label class="lab" for="qr-year" style="margin-right:6px">Year</label><select id="qr-year" class="mini-sel">' + qOpts + '</select></span></div>' +
     '<div class="qgrid"><div><h3 class="qr-h" style="margin-top:0">Ten God strength</h3>' + strengthHTML(SQ) +
-    '<p class="hint" style="margin-top:10px">Each Ten God as a share of the strongest (100%). Natal is the birth chart; ' + fyQ + ' adds the Luck Pillar in force and the year pillar. Day Master included, month branch counted double, seasonal multiplier applied.</p></div>' +
+    '<p class="hint" style="margin-top:10px">Each Ten God as a share of the strongest (100%). Natal is the birth chart; ' + fyQ + ' adds the year pillar (comparable to Joey Yap\'s Annual column); ' + fyQ + ' + Luck also adds the Luck Pillar in force. Day Master included, month branch counted double, hidden stems weighted evenly, four season multiplier, square root scale.</p></div>' +
     '<div>' + quickHTML(QQ) + '</div></div>' + aiBoxHTML() + requestBoxHTML() + '</section>';
 
   // elements + ten gods
@@ -1256,17 +1257,22 @@ function vietNote(v){
 
 /* ---------- Ten God strength chart ---------- */
 var TG_ORDER = ['比肩','劫财','食神','伤官','偏财','正财','七杀','正官','偏印','正印'];
+// Calibrated Nov 22, 2026 against Joey Yap's natal Ten Profile percentages on three charts (error cut from 201 to 58 points).
+// Season by the four seasons of the month branch (寅卯辰 spring Wood, 巳午未 summer Fire, 申酉戌 autumn Metal, 亥子丑 winter Water).
+var SEASON_EL = {'寅':'Wood','卯':'Wood','辰':'Wood','巳':'Fire','午':'Fire','未':'Fire','申':'Metal','酉':'Metal','戌':'Metal','亥':'Water','子':'Water','丑':'Water'};
 function seasonMult(c, el){
-  // 旺 same as season 1.2 · 相 produced by season 1.1 · 休 produces season 1.0 · 囚 controls season 0.9 · 死 controlled by season 0.8
-  var d = (E.ELEMENTS.indexOf(el) - E.ELEMENTS.indexOf(c.monthEl) + 5) % 5;
-  return [1.2, 1.1, 0.8, 0.9, 1.0][d];
+  // 旺 same as season 2.0 · 相 produced by season 1.5 · 休 produces season 1.0 · 囚 controls season 0.6 · 死 controlled by season 0.4
+  var mp = c.pillars.filter(function(p){ return p.key === 'month'; })[0];
+  var se = (mp && SEASON_EL[mp.branch]) || c.monthEl;
+  var d = (E.ELEMENTS.indexOf(el) - E.ELEMENTS.indexOf(se) + 5) % 5;
+  return [2.0, 1.5, 0.4, 0.6, 1.0][d];
 }
 function godStem(dm, g){
   if(g === '比肩') return dm;
   for(var i = 0; i < 10; i++){ var s = E.STEMS[i]; if(s !== dm && E.tenGod(dm, s) === g) return s; }
   return '';
 }
-var HW = {1:[1], 2:[0.7,0.3], 3:[0.6,0.3,0.1]};
+var HW = {1:[1], 2:[1,0.5], 3:[1,1,1]};
 function addPillar(sc, c, stem, branch, mult){
   if(stem){ var g = stem === c.dm ? '比肩' : E.tenGod(c.dm, stem); sc[g] += 1 * seasonMult(c, E.stemEl(stem)); }
   if(branch){
@@ -1282,9 +1288,12 @@ function strengthChart(c, T){
   var yr = blank(); TG_ORDER.forEach(function(g){ yr[g] = nat[g]; });
   if(T.luck) addPillar(yr, c, T.luck.stem, T.luck.branch, 1);
   addPillar(yr, c, T.year.stem, T.year.branch, 1);
-  function norm(o){ var m = 0, t = 0, r = {}, sh = {}; TG_ORDER.forEach(function(g){ m = Math.max(m, o[g]); t += o[g]; }); TG_ORDER.forEach(function(g){ r[g] = m ? Math.round(o[g]/m*100) : 0; sh[g] = t ? o[g]/t : 0; }); return {pct:r, share:sh, raw:o}; }
-  var N = norm(nat), Y = norm(yr);
-  var rows = TG_ORDER.map(function(g){ return {god:g, stem:godStem(c.dm, g), nat:N.pct[g], yr:Y.pct[g]}; });
+  var yo = blank(); TG_ORDER.forEach(function(g){ yo[g] = nat[g]; });
+  addPillar(yo, c, T.year.stem, T.year.branch, 1);
+  // Bars use a square root scale (as Joey Yap's profiles appear to); shares stay linear.
+  function norm(o){ var m = 0, t = 0, r = {}, sh = {}; TG_ORDER.forEach(function(g){ m = Math.max(m, o[g]); t += o[g]; }); TG_ORDER.forEach(function(g){ r[g] = m ? Math.round(Math.sqrt(o[g]/m)*100) : 0; sh[g] = t ? o[g]/t : 0; }); return {pct:r, share:sh, raw:o}; }
+  var N = norm(nat), Y = norm(yr), O = norm(yo);
+  var rows = TG_ORDER.map(function(g){ return {god:g, stem:godStem(c.dm, g), nat:N.pct[g], yo:O.pct[g], yr:Y.pct[g]}; });
   rows.sort(function(a,b){ return b.nat - a.nat || b.yr - a.yr; });
   var groups = {Companion:['比肩','劫财'], Output:['食神','伤官'], Wealth:['偏财','正财'], Power:['七杀','正官'], Resource:['偏印','正印']};
   var gshift = Object.keys(groups).map(function(k){
@@ -1295,13 +1304,13 @@ function strengthChart(c, T){
 }
 function strengthHTML(S, forPrint){
   var p = forPrint ? 'rp-' : '';
-  return '<div class="' + p + 'tgs">' +
-    '<div class="tgs-head"><span></span><span>Natal</span><span>' + S.year + '</span></div>' +
+  function bar(v, cls){ return '<span class="tgs-bar"><span class="tgs-fill ' + cls + '" style="width:' + v + '%"></span><span class="tgs-v">' + v + '%</span></span>'; }
+  return '<div class="' + p + 'tgs tgs3">' +
+    '<div class="tgs-head"><span></span><span>Natal</span><span>' + S.year + '</span><span>' + S.year + ' + Luck</span></div>' +
     S.rows.map(function(r){
       var el = r.stem ? E.stemEl(r.stem) : 'Metal';
       return '<div class="tgs-row"><span class="tgs-name"><b class="zh el-' + el + ' rp-el-' + el + '">' + r.stem + '</b> ' + TGL(r.god) + ' <span class="zh tgs-zh">' + r.god + '</span></span>' +
-        '<span class="tgs-bar"><span class="tgs-fill tgs-nat" style="width:' + r.nat + '%"></span><span class="tgs-v">' + r.nat + '%</span></span>' +
-        '<span class="tgs-bar"><span class="tgs-fill tgs-yr" style="width:' + r.yr + '%"></span><span class="tgs-v">' + r.yr + '%</span></span></div>';
+        bar(r.nat, 'tgs-nat') + bar(r.yo, 'tgs-yr') + bar(r.yr, 'tgs-yr') + '</div>';
     }).join('') + '</div>';
 }
 
@@ -1654,7 +1663,7 @@ function reportBlocks(){
 
   // ten god strength + quick reading
   var SR = strengthChart(c, T), QR = quickReading(c, T, SR);
-  B.push({html: '<h2>0. Ten God strength, natal and ' + SR.year + '</h2>' + strengthHTML(SR, true) + '<div class="rp-note">Each Ten God as a share of the strongest (100%). ' + SR.year + ' adds the Luck Pillar in force and the year pillar to the natal chart. Day Master included, month branch counted double, seasonal multiplier applied.</div>'});
+  B.push({html: '<h2>0. Ten God strength, natal and ' + SR.year + '</h2>' + strengthHTML(SR, true) + '<div class="rp-note">Each Ten God against the strongest (100%), on a square root scale. ' + SR.year + ' adds the year pillar to the natal chart; ' + SR.year + ' + Luck also adds the Luck Pillar in force. Day Master included, month branch counted double, hidden stems weighted evenly, four season multiplier.</div>'});
   B.push({html: '<h2>0. Reading for ' + QR.year + '</h2><div class="rp-qr">' + quickHTML(QR, true) + '</div>'});
   if(state.ai && state.ai.key === chartKey()){
     var paras = state.ai.md.replace(/\r/g,'').split(/\n\s*\n/).map(function(x){ return x.trim(); }).filter(Boolean), first = true, pend = '';
