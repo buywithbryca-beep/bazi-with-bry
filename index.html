@@ -367,6 +367,7 @@ textarea#copyfallback{width:100%;min-height:160px;margin-top:10px;background:var
 .rp-el-Wood{color:#2F7D45}.rp-el-Fire{color:#C23B2A}.rp-el-Earth{color:#9A6B1F}.rp-el-Metal{color:#6B7682}.rp-el-Water{color:#24578F}
 .rp-bg-Wood{background:#2F7D45}.rp-bg-Fire{background:#C23B2A}.rp-bg-Earth{background:#9A6B1F}.rp-bg-Metal{background:#6B7682}.rp-bg-Water{background:#24578F}
 @media (prefers-reduced-motion:no-preference){.lp,.yp,.btn{transition:border-color .15s,box-shadow .15s}}
+.btn.pulse{animation:bzpulse 1.4s ease-in-out 3}@keyframes bzpulse{0%,100%{box-shadow:0 0 0 0 rgba(169,46,38,.5)}50%{box-shadow:0 0 0 10px rgba(169,46,38,0)}}
 </style>
 
 <style>body{margin:0}[hidden]{display:none!important}</style>
@@ -766,6 +767,15 @@ var BZ = (function () {
 var TZS = ["Europe/Andorra","Asia/Dubai","Asia/Kabul","America/Puerto_Rico","Europe/Tirane","Asia/Yerevan","Africa/Lagos","Pacific/Auckland","America/Argentina/Buenos_Aires","America/Argentina/Cordoba","America/Argentina/San_Juan","America/Argentina/Salta","America/Argentina/Jujuy","America/Argentina/Tucuman","America/Argentina/Rio_Gallegos","America/Argentina/La_Rioja","America/Argentina/Mendoza","America/Argentina/San_Luis","America/Argentina/Ushuaia","America/Argentina/Catamarca","Pacific/Pago_Pago","Europe/Vienna","Europe/Berlin","Australia/Perth","Australia/Adelaide","Australia/Darwin","Australia/Brisbane","Australia/Sydney","Australia/Melbourne","Australia/Hobart","Australia/Broken_Hill","Australia/Lindeman","Europe/Helsinki","Asia/Baku","Europe/Belgrade","America/Barbados","Asia/Dhaka","Europe/Brussels","Africa/Abidjan","Europe/Sofia","Asia/Qatar","Africa/Johannesburg","Atlantic/Bermuda","Asia/Makassar","America/Fortaleza","America/Recife","America/Belem","America/Maceio","America/Manaus","America/Bahia","America/Santarem","America/Araguaina","America/Sao_Paulo","America/Cuiaba","America/Campo_Grande","America/Rio_Branco","America/Porto_Velho","America/Eirunepe","America/Boa_Vista","America/Noronha","America/Toronto","Asia/Thimphu","Europe/Minsk","America/Belize","America/Vancouver","America/Edmonton","America/Halifax","America/Winnipeg","America/Glace_Bay","America/Regina","America/Panama","America/St_Johns","America/Swift_Current","America/Moncton","America/Dawson_Creek","America/Iqaluit","America/Phoenix","America/Inuvik","America/Fort_Nelson","America/Cambridge_Bay","America/Whitehorse","America/Goose_Bay","America/Rankin_Inlet","America/Dawson","Asia/Yangon","Europe/Zurich","Pacific/Rarotonga","America/Santiago","America/Punta_Arenas","America/Coyhaique","Pacific/Easter","Asia/Shanghai","Asia/Urumqi","Asia/Jakarta","America/Bogota","America/Costa_Rica","America/Havana","Atlantic/Cape_Verde","Asia/Nicosia","Asia/Famagusta","Europe/Prague","Asia/Riyadh","America/Santo_Domingo","Africa/Algiers","America/Guayaquil","Pacific/Galapagos","Europe/Tallinn","Africa/Cairo","Africa/El_Aaiun","Europe/Madrid","Atlantic/Canary","Africa/Ceuta","Pacific/Fiji","Atlantic/Stanley","Pacific/Port_Moresby","Pacific/Kosrae","Pacific/Guadalcanal","Atlantic/Faroe","Europe/Paris","Europe/London","Asia/Tbilisi","Europe/Moscow","America/Cayenne","Europe/Gibraltar","America/Nuuk","Europe/Athens","Atlantic/South_Georgia","America/Guatemala","Pacific/Guam","Africa/Bissau","America/Guyana","America/Paramaribo","Asia/Hong_Kong","America/Tegucigalpa","America/El_Salvador","America/Port-au-Prince","Europe/Budapest","Asia/Tokyo","Asia/Pontianak","Asia/Jerusalem","Asia/Kolkata","Asia/Baghdad","Asia/Tehran","Europe/Rome","America/Jamaica","Asia/Amman","Asia/Bishkek","Asia/Dushanbe","Pacific/Tarawa","Pacific/Kiritimati","Asia/Pyongyang","Asia/Seoul","Asia/Oral","Asia/Aqtau","Asia/Aqtobe","Asia/Atyrau","Asia/Almaty","Asia/Qyzylorda","Asia/Qostanay","Asia/Beirut","Asia/Colombo","Africa/Monrovia","Europe/Vilnius","Europe/Riga","Africa/Tripoli","Africa/Casablanca","Europe/Chisinau","Pacific/Kwajalein","Asia/Hovd","Asia/Ulaanbaatar","America/Martinique","Europe/Malta","Indian/Mauritius","Indian/Maldives","America/Monterrey","America/Mexico_City","America/Matamoros","America/Merida","America/Cancun","America/Hermosillo","America/Chihuahua","America/Ciudad_Juarez","America/Mazatlan","America/Tijuana","America/Bahia_Banderas","America/Ojinaga","Asia/Singapore","Africa/Windhoek","Pacific/Noumea","Pacific/Norfolk","America/Managua","Asia/Kathmandu","Pacific/Nauru","Pacific/Chatham","America/Lima","Pacific/Marquesas","Pacific/Gambier","Pacific/Honolulu","Pacific/Bougainville","Asia/Manila","Asia/Karachi","Europe/Warsaw","America/Miquelon","Pacific/Pitcairn","Asia/Gaza","Asia/Hebron","Europe/Lisbon","Atlantic/Madeira","Atlantic/Azores","America/Asuncion","Europe/Bucharest","Europe/Kyiv","Asia/Yekaterinburg","Europe/Kirov","Europe/Samara","Europe/Kaliningrad","Europe/Volgograd","Europe/Ulyanovsk","Europe/Astrakhan","Europe/Saratov","Asia/Novokuznetsk","Asia/Tomsk","Asia/Krasnoyarsk","Asia/Barnaul","Asia/Omsk","Asia/Novosibirsk","Asia/Irkutsk","Asia/Chita","Asia/Yakutsk","Asia/Vladivostok","Asia/Khandyga","Asia/Kamchatka","Asia/Srednekolymsk","Asia/Sakhalin","Asia/Magadan","Asia/Ust-Nera","Asia/Anadyr","Africa/Khartoum","Africa/Juba","Africa/Sao_Tome","Asia/Damascus","America/Grand_Turk","Africa/Ndjamena","Pacific/Fakaofo","Asia/Dili","Asia/Ashgabat","Africa/Tunis","Pacific/Tongatapu","Europe/Istanbul","Asia/Taipei","Europe/Simferopol","America/Chicago","America/New_York","America/Indiana/Indianapolis","America/Indiana/Vincennes","America/Indiana/Tell_City","America/Kentucky/Louisville","America/Indiana/Marengo","America/Indiana/Petersburg","America/Indiana/Vevay","America/Kentucky/Monticello","America/Detroit","America/Indiana/Knox","America/Indiana/Winamac","America/Menominee","America/Los_Angeles","America/Denver","America/Juneau","America/Sitka","America/Metlakatla","America/Boise","America/North_Dakota/Beulah","America/North_Dakota/Center","America/North_Dakota/New_Salem","America/Anchorage","America/Nome","America/Montevideo","Asia/Samarkand","Asia/Tashkent","America/Caracas","Asia/Ho_Chi_Minh","Pacific/Efate","Pacific/Apia"];
 var $ = function(id){return document.getElementById(id);};
 var E = BZ;
+/* Plain English labels: meaning first, classical name second (Bry's standard). */
+var TG_PLAIN = {'比肩':'Your equals','劫财':'Competitors','食神':'Creativity and enjoyment','伤官':'The rebel voice','偏财':'Windfall money','正财':'Steady money','七杀':'Raw pressure','正官':'Structure and status','偏印':'Unusual knowledge','正印':'Support and protection','日主':'You'};
+var GROUP_PLAIN = {Companion:'You and your peers',Resource:'What supports you',Output:'What you produce',Wealth:'What you control',Power:'What controls you'};
+var LINK_PLAIN = {'Stem Combination':'A bond on the surface','Stem Clash':'Head on clash','Six Harmony':'A close bond','Clash':'Opposites pulling','Harm':'Small friction','Destruction':'Breaking point','Punishment':'Friction with a lesson','Self Punishment':'Self inflicted pressure','Three Harmony':'A team of three','Half Three Harmony':'Half a team','Directional Meeting':'A season gathered'};
+var STAGE_PLAIN = ['New growth','Exposed and learning','Getting ready','Established','At full strength','Past the peak','Running low','Stopped','Stored away','Cut off','A seed','Being cared for'];
+function TGL(g){ return TG_PLAIN[g] ? TG_PLAIN[g] + ' (' + E.TG_EN[g] + ')' : (E.TG_EN[g] || ''); }
+function GPL(g){ return GROUP_PLAIN[g] ? GROUP_PLAIN[g] + ' (' + g + ')' : g; }
+function LPL(t){ return LINK_PLAIN[t] ? LINK_PLAIN[t] + ' (' + t + ')' : t; }
+function STG(i){ return STAGE_PLAIN[i] + ' (' + E.STAGES_EN[i] + ')'; }
 var sel = $('f-city'), gender = 'M', state = {chart:null, luckIdx:null, year:null, example:false};
 var place = {label:'Calgary, AB, Canada', lon:-114.085, tz:'America/Edmonton'};
 var shardCache = {}, cityHits = [], cityActive = -1;
@@ -874,7 +884,7 @@ function updateHint(){
 
 /* ---------- rendering helpers ---------- */
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-function god(g, full){ if(!g) return ''; return '<span class="god">' + (full?E.TG_EN[g]:E.TG_ABBR[g]) + '<span class="zh">' + g + '</span></span>'; }
+function god(g, full){ if(!g) return ''; return '<span class="god">' + (TG_PLAIN[g] || E.TG_EN[g]) + '<span class="zh">' + E.TG_EN[g] + ' ' + g + '</span></span>'; }
 function polEl(el, yang){ return (yang?'Yang ':'Yin ') + el; }
 function ageFmt(a){ return a.toFixed(1); }
 
@@ -893,7 +903,7 @@ function render(){
       '<span class="chip">Strength <b>' + c.verdict + '</b></span>' +
       '<span class="chip">Season <b>' + c.season.en + '</b> <span class="zh">' + c.season.zh + '</span></span>' +
       '<span class="chip">Year animal <b>' + (yp.stemYang?'Yang ':'Yin ') + yp.stemEl + ' ' + yp.animal + '</b></span>' +
-      '<span class="chip">Void <b class="zh">' + c.voids.join(' ') + '</b></span>' +
+      '<span class="chip">Empty spots (Void) <b class="zh">' + c.voids.join(' ') + '</b></span>' +
     '</div>' +
     '<div class="timeline-note mono">' + (inp.trueSolar && inp.lon!==null ?
        'True solar time ' + c.time.local + '  (longitude ' + (c.time.lonCorr>=0?'+':'') + c.time.lonCorr.toFixed(1) + ' min, equation of time ' + (c.time.eot>=0?'+':'') + c.time.eot.toFixed(1) + ' min)' :
@@ -906,13 +916,13 @@ function render(){
   function cells(fn, cls){ return P.map(function(p){ return '<div class="' + (cls||'') + '">' + (p.missing? '' : fn(p)) + '</div>'; }).join(''); }
   html += '<section class="panel sect"><div class="sect-h"><h2>Four Pillars</h2><span class="zh">四柱</span><span class="aside">Ten Gods are relative to the Day Master</span></div><div class="pillars-wrap"><div class="pillars">' +
     '<div class="rh">Pillar</div>' + P.map(function(p){ return '<div class="colh' + (p.key==='day'?' dmcol':'') + '">' + p.label + (p.key==='day'?' (Self)':'') + '</div>'; }).join('') +
-    '<div class="rh">Stem god</div>' + cells(function(p){ return p.key==='day' ? '<span class="god">Day Master<span class="zh">日主</span></span>' : god(p.stemGod, true); }) +
+    '<div class="rh">What it is for you (Ten God)</div>' + cells(function(p){ return p.key==='day' ? '<span class="god">Day Master<span class="zh">日主</span></span>' : god(p.stemGod, true); }) +
     '<div class="rh">Heavenly Stem</div>' + P.map(function(p){ return p.missing ? '<div class="missing" style="grid-row:span 2">Hour unknown</div>' : '<div class="bg-' + p.stemEl + '"><div class="glyph zh el-' + p.stemEl + '">' + p.stem + '</div><div class="gsub">' + p.stemPy + ', ' + polEl(p.stemEl, p.stemYang) + '</div></div>'; }).join('') +
     '<div class="rh">Earthly Branch</div>' + P.map(function(p){ return p.missing ? '' : '<div class="bg-' + p.branchEl + '"><div class="glyph zh el-' + p.branchEl + '">' + p.branch + '</div><div class="gsub">' + p.branchPy + ', ' + p.animal + ', ' + p.branchEl + '</div></div>'; }).join('') +
     '<div class="rh">Hidden stems</div>' + cells(function(p){ return '<div class="hidlist">' + p.hidden.map(function(h){ return '<div class="hid"><span class="zh el-' + h.el + '">' + h.stem + '</span><span>' + E.TG_ABBR[h.god] + '</span><span class="zh gsub">' + h.god + '</span></div>'; }).join('') + '</div>'; }) +
-    '<div class="rh">DM life stage</div>' + cells(function(p){ return E.STAGES_EN[p.stage] + '<div class="gsub zh">' + E.STAGES[p.stage] + '</div>'; }) +
-    '<div class="rh">Self seat</div>' + cells(function(p){ return E.STAGES_EN[p.selfStage] + '<div class="gsub zh">' + E.STAGES[p.selfStage] + '</div>'; }) +
-    '<div class="rh last">Na Yin</div>' + cells(function(p){ return p.nayin[1] + '<div class="gsub zh">' + p.nayin[0] + '</div>'; }, 'last') +
+    '<div class="rh">Your energy here (life stage)</div>' + cells(function(p){ return STG(p.stage) + '<div class="gsub zh">' + E.STAGES[p.stage] + '</div>'; }) +
+    '<div class="rh">Self seat</div>' + cells(function(p){ return STG(p.selfStage) + '<div class="gsub zh">' + E.STAGES[p.selfStage] + '</div>'; }) +
+    '<div class="rh last">Sound image (Na Yin)</div>' + cells(function(p){ return p.nayin[1] + '<div class="gsub zh">' + p.nayin[0] + '</div>'; }, 'last') +
     '</div></div></section>';
 
   // vietnamese zodiac
@@ -943,14 +953,14 @@ function render(){
   var gEl = {Companion:c.dmEl, Resource:c.resEl, Output:E.ELEMENTS[(E.ELEMENTS.indexOf(c.dmEl)+1)%5], Wealth:E.ELEMENTS[(E.ELEMENTS.indexOf(c.dmEl)+2)%5], Power:E.ELEMENTS[(E.ELEMENTS.indexOf(c.dmEl)+3)%5]};
   var gDetail = {Companion:['比肩','劫财'],Resource:['正印','偏印'],Output:['食神','伤官'],Wealth:['正财','偏财'],Power:['正官','七杀']};
   var godBars = groups.map(function(g){
-    var d = gDetail[g].map(function(k){ return E.TG_ABBR[k] + ' ' + (c.godScore[k]||0).toFixed(1); }).join(', ');
-    return '<div class="bar"><span><b>' + g + '</b><div class="gsub el-' + gEl[g] + '">' + gEl[g] + '</div></span><div class="track"><div class="fill" style="width:' + (gmax? gs[g]/gmax*100 : 0) + '%;background:var(--' + gEl[g].toLowerCase() + ')"></div></div><span class="v mono" title="' + d + '">' + gs[g].toFixed(1) + '</span></div>';
+    var d = gDetail[g].map(function(k){ return TGL(k) + ' ' + (c.godScore[k]||0).toFixed(1); }).join(', ');
+    return '<div class="bar"><span><b>' + GROUP_PLAIN[g] + '</b><div class="gsub el-' + gEl[g] + '">' + g + ', ' + gEl[g] + '</div></span><div class="track"><div class="fill" style="width:' + (gmax? gs[g]/gmax*100 : 0) + '%;background:var(--' + gEl[g].toLowerCase() + ')"></div></div><span class="v mono" title="' + d + '">' + gs[g].toFixed(1) + '</span></div>';
   }).join('');
   html += '<div class="two"><section class="panel sect"><div class="sect-h"><h2>Five Element balance</h2><span class="zh">五行</span></div><div class="bars">' + elBars + '</div>' +
     '<p class="hint" style="margin-top:12px">Weighted: each stem 1, each branch 1 split across its hidden stems, month branch counted double for season. Visible count (stems and branch elements): ' +
     E.ELEMENTS.map(function(e){ return e + ' ' + c.elCount[e]; }).join(', ') + '.</p></section>' +
     '<section class="panel sect"><div class="sect-h"><h2>Ten God groups</h2><span class="zh">十神</span></div><div class="bars">' + godBars + '</div>' +
-    '<p class="hint" style="margin-top:12px">' + groups.map(function(g){ return g + ': ' + gDetail[g].map(function(k){ return E.TG_EN[k] + ' ' + (c.godScore[k]||0).toFixed(1); }).join(', '); }).join('. ') + '.</p></section></div>';
+    '<p class="hint" style="margin-top:12px">' + groups.map(function(g){ return GPL(g) + ': ' + gDetail[g].map(function(k){ return TGL(k) + ' ' + (c.godScore[k]||0).toFixed(1); }).join(', '); }).join('. ') + '.</p></section></div>';
 
   // strength
   var pct = Math.max(0, Math.min(1, c.ratio))*100;
@@ -971,25 +981,25 @@ function render(){
   var cby = currentBaziYear(), fy = state.focusYear || cby, yOpts = '';
   var by = c.input.y; for(var yy = by; yy <= by + 100; yy++) yOpts += '<option value="' + yy + '"' + (yy===fy?' selected':'') + '>' + yy + ' ' + E.yearGanzhi(yy) + (yy===cby?' (current)':'') + '</option>';
   function miniT(title, x, extra){
-    return '<div class="mini"><span class="glyph zh"><span class="el-' + E.stemEl(x.stem) + '">' + x.stem + '</span><span class="el-' + E.branchEl(x.branch) + '">' + x.branch + '</span></span><div><span class="lab">' + title + '</span><div class="d">' + E.TG_EN[x.stemGod] + ' over ' + E.TG_EN[x.branchGod] + '<br>' + extra + '</div></div></div>';
+    return '<div class="mini"><span class="glyph zh"><span class="el-' + E.stemEl(x.stem) + '">' + x.stem + '</span><span class="el-' + E.branchEl(x.branch) + '">' + x.branch + '</span></span><div><span class="lab">' + title + '</span><div class="d">' + TGL(x.stemGod) + ' over ' + TGL(x.branchGod) + '<br>' + extra + '</div></div></div>';
   }
   html += '<section class="panel sect" id="outlook"><div class="sect-h"><h2>Timing outlook</h2><span class="zh">流年流月</span></div>' +
     '<div class="yearbar"><button type="button" class="btn small" id="fy-prev" aria-label="Previous year">&larr; Prev</button><label class="lab" for="fy-sel">Focus year</label><select id="fy-sel">' + yOpts + '</select><button type="button" class="btn small" id="fy-next" aria-label="Next year">Next &rarr;</button>' + (T.focused?'<button type="button" class="btn small" id="fy-now">Back to today</button>':'') + '</div>' +
     '<h3 class="sub-h" style="margin-top:0">' + (T.focused ? 'Active at the start of the ' + fy + ' year (' + T.todayStr + ')' : 'Active right now (' + T.todayStr + ')') + '</h3><div class="bg-grid">' +
-      (T.luck ? miniT('Luck Pillar ' + T.luck.startYear + ' to ' + T.luck.endYear, T.luck, 'DM stage: ' + E.STAGES_EN[T.luck.stage]) : '<div class="mini"><div class="d">Before the first Luck Pillar</div></div>') +
-      miniT('Year ' + T.year.year + ' (from Li Chun)', T.year, T.year.stemEl + ' ' + T.year.animal + ', DM stage: ' + E.STAGES_EN[T.year.stage]) +
-      miniT('Month from ' + T.months[0].start, T.months[0], T.months[0].term + ', DM stage: ' + E.STAGES_EN[T.months[0].stage]) +
+      (T.luck ? miniT('Luck Pillar ' + T.luck.startYear + ' to ' + T.luck.endYear, T.luck, 'DM stage: ' + STG(T.luck.stage)) : '<div class="mini"><div class="d">Before the first Luck Pillar</div></div>') +
+      miniT('Year ' + T.year.year + ' (from Li Chun)', T.year, T.year.stemEl + ' ' + T.year.animal + ', DM stage: ' + STG(T.year.stage)) +
+      miniT('Month from ' + T.months[0].start, T.months[0], T.months[0].term + ', DM stage: ' + STG(T.months[0].stage)) +
     '</div>' + intsHTML(T.nowInts, 'The current Luck Pillar, year and month form no listed interactions with the natal chart.') +
     (T.next ? '<h3 class="sub-h">Next Luck Pillar</h3><div class="bg-grid">' +
-      miniT('Starts ' + T.next.startStr + ', age ' + ageFmt(T.next.startAge), T.next, 'DM stage: ' + E.STAGES_EN[T.next.stage]) + '</div>' +
+      miniT('Starts ' + T.next.startStr + ', age ' + ageFmt(T.next.startAge), T.next, 'DM stage: ' + STG(T.next.stage)) + '</div>' +
       intsHTML(T.next.ints, 'The next Luck Pillar forms no listed interactions with the natal chart.') : '') +
     '<h3 class="sub-h">' + (T.focused?'Six years from ' + fy:'Next five years') + '</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Year</th><th>Pillar</th><th>Ten Gods</th><th>Luck in force</th><th>Interactions with natal and luck</th></tr></thead><tbody>' +
       T.years.map(function(r){
-        return '<tr' + (r.a.year===T.year.year?' class="cur"':'') + '><td class="mono">' + r.a.year + '</td><td class="zh big"><span class="el-' + r.a.stemEl + '">' + r.a.stem + '</span><span class="el-' + r.a.branchEl + '">' + r.a.branch + '</span></td><td>' + E.TG_EN[r.a.stemGod] + '<br><span class="gsub">' + E.TG_EN[r.a.branchGod] + '</span></td><td><span class="zh">' + (r.luck?r.luck.gz:'None') + '</span>' + (r.change?'<br><span class="gsub">changes to <span class="zh">' + r.change.gz + '</span> ' + r.change.startStr + '</span>':'') + '</td><td>' + intsCompact(r.ints) + '</td></tr>';
+        return '<tr' + (r.a.year===T.year.year?' class="cur"':'') + '><td class="mono">' + r.a.year + '</td><td class="zh big"><span class="el-' + r.a.stemEl + '">' + r.a.stem + '</span><span class="el-' + r.a.branchEl + '">' + r.a.branch + '</span></td><td>' + TGL(r.a.stemGod) + '<br><span class="gsub">' + TGL(r.a.branchGod) + '</span></td><td><span class="zh">' + (r.luck?r.luck.gz:'None') + '</span>' + (r.change?'<br><span class="gsub">changes to <span class="zh">' + r.change.gz + '</span> ' + r.change.startStr + '</span>':'') + '</td><td>' + intsCompact(r.ints) + '</td></tr>';
       }).join('') + '</tbody></table></div>' +
     '<h3 class="sub-h">' + (T.focused?'The 12 months of the ' + fy + ' year':'Next 12 months') + '</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Starts</th><th>Solar term</th><th>Pillar</th><th>Ten Gods</th><th>Interactions with natal, Luck and year</th></tr></thead><tbody>' +
       T.months.map(function(m, i){
-        return '<tr' + (i===0?' class="cur"':'') + '><td class="mono">' + m.start + '</td><td>' + m.term + '<br><span class="gsub zh">' + m.termZh + '</span></td><td class="zh big"><span class="el-' + m.stemEl + '">' + m.stem + '</span><span class="el-' + m.branchEl + '">' + m.branch + '</span></td><td>' + E.TG_EN[m.stemGod] + '<br><span class="gsub">' + E.TG_EN[m.branchGod] + '</span></td><td>' + intsCompact(m.ints) + '</td></tr>';
+        return '<tr' + (i===0?' class="cur"':'') + '><td class="mono">' + m.start + '</td><td>' + m.term + '<br><span class="gsub zh">' + m.termZh + '</span></td><td class="zh big"><span class="el-' + m.stemEl + '">' + m.stem + '</span><span class="el-' + m.branchEl + '">' + m.branch + '</span></td><td>' + TGL(m.stemGod) + '<br><span class="gsub">' + TGL(m.branchGod) + '</span></td><td>' + intsCompact(m.ints) + '</td></tr>';
       }).join('') + '</tbody></table></div>' +
     '<p class="hint" style="margin-top:10px">Month pillars change at each Jie solar term (dates shown in China time, UTC+8, so the local change can fall a day earlier). Year rows include the Luck Pillar in force; month rows are checked against the natal chart, the Luck Pillar and the year pillar in force.</p></section>';
 
@@ -1004,7 +1014,7 @@ function render(){
         (i===curIdx?'<span class="now">Now</span>':'') +
         '<span class="age mono">Age ' + ageFmt(l.startAge) + '</span><span class="yr mono">' + l.startYear + ' to ' + l.endYear + '</span>' +
         '<span class="glyph zh"><span class="el-' + l.stemEl + '">' + l.stem + '</span><span class="el-' + l.branchEl + '">' + l.branch + '</span></span>' +
-        '<span class="gg">' + E.TG_EN[l.stemGod] + '<br>' + E.TG_EN[l.branchGod] + '</span></button>';
+        '<span class="gg">' + TGL(l.stemGod) + '<br>' + TGL(l.branchGod) + '</span></button>';
     }).join('') + '</div></div>';
 
   var L = c.luck[state.luckIdx];
@@ -1026,13 +1036,13 @@ function render(){
   var yearItem = {label:String(state.year), stem:A.stem, branch:A.branch, external:true};
   var bl = E.interactions(natal.concat([luckItem, yearItem]), true);
   function mini(title, g, s, b, sg, bg, extra){
-    return '<div class="mini"><span class="glyph zh"><span class="el-' + E.stemEl(s) + '">' + s + '</span><span class="el-' + E.branchEl(b) + '">' + b + '</span></span><div><span class="lab">' + title + '</span><div class="d">' + E.TG_EN[sg] + ' over ' + E.TG_EN[bg] + '<br>' + extra + '</div></div></div>';
+    return '<div class="mini"><span class="glyph zh"><span class="el-' + E.stemEl(s) + '">' + s + '</span><span class="el-' + E.branchEl(b) + '">' + b + '</span></span><div><span class="lab">' + title + '</span><div class="d">' + TGL(sg) + ' over ' + TGL(bg) + '<br>' + extra + '</div></div></div>';
   }
   html += '<section class="panel sect"><div class="sect-h"><h2>Annual interactions: ' + state.year + ' against the natal chart and Luck Pillar</h2><span class="zh">流年 对 原局 大运</span></div>' +
     '<div class="bg-grid">' +
-      mini('Luck Pillar ' + L.startYear + ' to ' + L.endYear, L.gz, L.stem, L.branch, L.stemGod, L.branchGod, 'DM stage: ' + E.STAGES_EN[L.stage]) +
-      mini('Year ' + state.year, A.gz, A.stem, A.branch, A.stemGod, A.branchGod, A.stemEl + ' ' + A.animal + ', DM stage: ' + E.STAGES_EN[A.stage]) +
-      '<div class="mini"><div><span class="lab">Year hidden stems</span><div class="d">' + A.hidden.map(function(h){ return '<span class="zh el-' + h.el + '">' + h.stem + '</span> ' + E.TG_EN[h.god]; }).join('<br>') + '</div></div></div>' +
+      mini('Luck Pillar ' + L.startYear + ' to ' + L.endYear, L.gz, L.stem, L.branch, L.stemGod, L.branchGod, 'DM stage: ' + STG(L.stage)) +
+      mini('Year ' + state.year, A.gz, A.stem, A.branch, A.stemGod, A.branchGod, A.stemEl + ' ' + A.animal + ', DM stage: ' + STG(A.stage)) +
+      '<div class="mini"><div><span class="lab">Year hidden stems</span><div class="d">' + A.hidden.map(function(h){ return '<span class="zh el-' + h.el + '">' + h.stem + '</span> ' + TGL(h.god); }).join('<br>') + '</div></div></div>' +
     '</div>' + intsHTML(bl, 'The Luck Pillar and ' + state.year + ' form no listed combinations, clashes, harms or punishments with the natal chart.') +
     (L.gz === A.gz ? '<p class="hint" style="margin-top:10px"><b>Note:</b> the year pillar repeats the Luck Pillar (岁运并临), which doubles its influence.</p>' : '') +
     (c.voids.indexOf(A.branch) >= 0 ? '<p class="hint" style="margin-top:10px">The ' + state.year + ' branch falls in the natal void (空亡).</p>' : '') +
@@ -1073,7 +1083,7 @@ function intsHTML(list, emptyMsg){
   var order = {clash:0, harm:1, combo:2};
   list = list.slice().sort(function(a,b){ return order[a.tone]-order[b.tone]; });
   return '<div class="ints">' + list.map(function(x){
-    return '<div class="int ' + x.tone + '"><span class="t">' + x.type + ' <span class="zh">' + x.zh + '</span></span><span><span class="zh">' + esc(x.text) + '</span>' + (x.note?' <span class="n">' + x.note + '</span>':'') + '</span></div>';
+    return '<div class="int ' + x.tone + '"><span class="t">' + LPL(x.type) + ' <span class="zh">' + x.zh + '</span></span><span><span class="zh">' + esc(x.text) + '</span>' + (x.note?' <span class="n">' + x.note + '</span>':'') + '</span></div>';
   }).join('') + '</div>';
 }
 
@@ -1139,10 +1149,10 @@ function intsCompact(list){
   if(!list.length) return '<span class="gsub">None</span>';
   var order = {clash:0, harm:1, combo:2};
   return list.slice().sort(function(a,b){ return order[a.tone]-order[b.tone]; }).map(function(x){
-    return '<div class="ic ' + x.tone + '"><b>' + x.type + '</b> <span class="zh">' + esc(x.text) + '</span></div>';
+    return '<div class="ic ' + x.tone + '"><b>' + LPL(x.type) + '</b> <span class="zh">' + esc(x.text) + '</span></div>';
   }).join('');
 }
-function intsPlain(list){ return list.length ? list.map(function(x){ return x.type + ' ' + x.text + (x.note?' ('+x.note+')':''); }).join('; ') : 'none'; }
+function intsPlain(list){ return list.length ? list.map(function(x){ return LPL(x.type) + ' ' + x.text + (x.note?' ('+x.note+')':''); }).join('; ') : 'none'; }
 
 /* ---------- Vietnamese zodiac ---------- */
 var VN_ANIMALS = ['Rat','Buffalo','Tiger','Cat','Dragon','Snake','Horse','Goat','Monkey','Rooster','Dog','Pig'];
@@ -1255,7 +1265,7 @@ function strengthHTML(S, forPrint){
     '<div class="tgs-head"><span></span><span>Natal</span><span>' + S.year + '</span></div>' +
     S.rows.map(function(r){
       var el = r.stem ? E.stemEl(r.stem) : 'Metal';
-      return '<div class="tgs-row"><span class="tgs-name"><b class="zh el-' + el + ' rp-el-' + el + '">' + r.stem + '</b> ' + E.TG_EN[r.god] + ' <span class="zh tgs-zh">' + r.god + '</span></span>' +
+      return '<div class="tgs-row"><span class="tgs-name"><b class="zh el-' + el + ' rp-el-' + el + '">' + r.stem + '</b> ' + TGL(r.god) + ' <span class="zh tgs-zh">' + r.god + '</span></span>' +
         '<span class="tgs-bar"><span class="tgs-fill tgs-nat" style="width:' + r.nat + '%"></span><span class="tgs-v">' + r.nat + '%</span></span>' +
         '<span class="tgs-bar"><span class="tgs-fill tgs-yr" style="width:' + r.yr + '%"></span><span class="tgs-v">' + r.yr + '%</span></span></div>';
     }).join('') + '</div>';
@@ -1402,12 +1412,12 @@ function quickHTML(Q, forPrint){
     '<h3 class="qr-h">Quick personality</h3>' +
     '<p><b>' + esc(Q.personality.dm.split('. ')[0]) + '.</b> ' + esc(Q.personality.dm.split('. ').slice(1).join('. ')) + '</p>' +
     '<p>' + esc(Q.personality.strength) + '</p>' +
-    '<ul>' + Q.personality.profiles.map(function(x){ return '<li><b>Strong ' + E.TG_EN[x.god] + ':</b> ' + esc(x.text) + '</li>'; }).join('') + '</ul>' +
+    '<ul>' + Q.personality.profiles.map(function(x){ return '<li><b>Strong ' + TGL(x.god) + ':</b> ' + esc(x.text) + '</li>'; }).join('') + '</ul>' +
     '<h3 class="qr-h">Your sign in ' + Q.year + '</h3>' +
     Q.signs.map(function(sg){ return '<p><span class="qr-chip qr-' + sg.tone + '">' + sg.label + '</span> <b>' + sg.mine + '</b> meets the ' + sg.yearAnimal + ' year <span class="qr-muted">(' + sg.system + ')</span>. ' + esc(sg.text) + '</p>'; }).join('') +
     '<h3 class="qr-h">' + Q.year + ' overview</h3>' +
-    '<p><b>On the surface:</b> ' + cap(esc(Q.yearGods.stem.text)) + '. <span class="qr-muted">(' + E.TG_EN[Q.yearGods.stem.god] + ' stem)</span></p>' +
-    '<p><b>Underneath:</b> ' + cap(esc(Q.yearGods.branch.text)) + '. <span class="qr-muted">(' + E.TG_EN[Q.yearGods.branch.god] + ' branch)</span></p>' +
+    '<p><b>On the surface:</b> ' + cap(esc(Q.yearGods.stem.text)) + '. <span class="qr-muted">(' + TGL(Q.yearGods.stem.god) + ' stem)</span></p>' +
+    '<p><b>Underneath:</b> ' + cap(esc(Q.yearGods.branch.text)) + '. <span class="qr-muted">(' + TGL(Q.yearGods.branch.god) + ' branch)</span></p>' +
     Q.shift.map(function(s){ return '<p><b>' + s.group + ' ' + (s.dir === 'up' ? 'up' : 'down') + ' ' + s.pts + ' points:</b> ' + esc(s.text) + '</p>'; }).join('') +
     (Q.palaces.length ? '<p><b>Where the year hits the chart:</b></p><ul>' + Q.palaces.map(function(x){ return '<li class="qr-' + x.tone + '">' + esc(x.text) + '</li>'; }).join('') + '</ul>' : '<p><b>Where the year hits the chart:</b> no major clashes or combinations with the natal pillars or Luck Pillar.</p>') +
     '<p class="qr-lesson"><b>The lesson of ' + Q.year + ':</b> ' + esc(Q.lesson) + '</p>' +
@@ -1418,7 +1428,7 @@ function quickText(Q){
   var o = [];
   o.push('QUICK READING ' + Q.year);
   o.push('Personality: ' + Q.personality.dm + ' ' + Q.personality.strength);
-  Q.personality.profiles.forEach(function(x){ o.push('  Strong ' + E.TG_EN[x.god] + ': ' + x.text); });
+  Q.personality.profiles.forEach(function(x){ o.push('  Strong ' + TGL(x.god) + ': ' + x.text); });
   Q.signs.forEach(function(sg){ o.push('Sign in ' + Q.year + ' (' + sg.system + '): ' + sg.mine + ' meets ' + sg.yearAnimal + ', ' + sg.label + '. ' + sg.text); });
   o.push('Surface: ' + Q.yearGods.stem.text + '. Underneath: ' + Q.yearGods.branch.text + '.');
   Q.shift.forEach(function(s){ o.push(s.group + ' ' + s.dir + ' ' + s.pts + ' points: ' + s.text); });
@@ -1571,7 +1581,7 @@ function rpInts(list){
   if(!list.length) return '<span class="rp-muted">None</span>';
   var order = {clash:0, harm:1, combo:2};
   return list.slice().sort(function(a,b){ return order[a.tone]-order[b.tone]; }).map(function(x){
-    return '<div class="rp-int rp-' + x.tone + '"><b>' + x.type + ' ' + x.zh + '</b> ' + esc(x.text) + (x.note ? ' <span class="rp-muted">(' + esc(x.note) + ')</span>' : '') + '</div>';
+    return '<div class="rp-int rp-' + x.tone + '"><b>' + LPL(x.type) + ' ' + x.zh + '</b> ' + esc(x.text) + (x.note ? ' <span class="rp-muted">(' + esc(x.note) + ')</span>' : '') + '</div>';
   }).join('');
 }
 
@@ -1595,14 +1605,14 @@ function reportBlocks(){
   // four pillars
   function row(label, fn){ return '<tr><th>' + label + '</th>' + P.map(function(p){ return '<td>' + (p.missing ? (label==='Heavenly Stem' ? '<span class="rp-muted">Unknown</span>' : '') : fn(p)) + '</td>'; }).join('') + '</tr>'; }
   B.push({html: '<h2>2. Four Pillars</h2><table class="rp-pillars"><thead><tr><th></th>' + P.map(function(p){ return '<th' + (p.key==='day'?' class="rp-dm"':'') + '>' + p.label + (p.key==='day'?' (Self)':'') + '</th>'; }).join('') + '</tr></thead><tbody>' +
-    row('Ten God', function(p){ return p.key==='day' ? 'Day Master 日主' : E.TG_EN[p.stemGod] + ' ' + p.stemGod; }) +
+    row('What it is for you (Ten God)', function(p){ return p.key==='day' ? 'Day Master 日主' : TGL(p.stemGod) + ' ' + p.stemGod; }) +
     row('Heavenly Stem', function(p){ return '<div class="rp-glyph">' + rpStem(p.stem) + '</div><div class="rp-small">' + p.stemPy + ', ' + polEl(p.stemEl, p.stemYang) + '</div>'; }) +
     row('Earthly Branch', function(p){ return '<div class="rp-glyph">' + rpBranch(p.branch) + '</div><div class="rp-small">' + p.branchPy + ', ' + p.animal + ', ' + p.branchEl + '</div>'; }) +
-    row('Hidden stems', function(p){ return p.hidden.map(function(h){ return '<div class="rp-small"><b class="rp-el-' + h.el + '">' + h.stem + '</b> ' + E.TG_EN[h.god] + '</div>'; }).join(''); }) +
-    row('DM life stage', function(p){ return E.STAGES_EN[p.stage] + ' ' + E.STAGES[p.stage]; }) +
-    row('Self seat', function(p){ return E.STAGES_EN[p.selfStage] + ' ' + E.STAGES[p.selfStage]; }) +
-    row('Na Yin', function(p){ return p.nayin[1] + '<div class="rp-small">' + p.nayin[0] + '</div>'; }) +
-    '</tbody></table><div class="rp-note">Void (空亡): ' + c.voids.join(' ') + '. Year animal: ' + (P[3].stemYang?'Yang ':'Yin ') + P[3].stemEl + ' ' + P[3].animal + '.</div>'});
+    row('Hidden stems', function(p){ return p.hidden.map(function(h){ return '<div class="rp-small"><b class="rp-el-' + h.el + '">' + h.stem + '</b> ' + TGL(h.god) + '</div>'; }).join(''); }) +
+    row('Your energy here (life stage)', function(p){ return STG(p.stage) + ' ' + E.STAGES[p.stage]; }) +
+    row('Self seat', function(p){ return STG(p.selfStage) + ' ' + E.STAGES[p.selfStage]; }) +
+    row('Sound image (Na Yin)', function(p){ return p.nayin[1] + '<div class="rp-small">' + p.nayin[0] + '</div>'; }) +
+    '</tbody></table><div class="rp-note">Empty spots, Void (空亡): ' + c.voids.join(' ') + '. Year animal: ' + (P[3].stemYang?'Yang ':'Yin ') + P[3].stemEl + ' ' + P[3].animal + '.</div>'});
 
   // vietnamese zodiac
   var V = vietSign(c);
@@ -1638,7 +1648,7 @@ function reportBlocks(){
   B.push({html: '<h2>5. Five Elements and Ten Gods</h2><div class="rp-two"><div><h3>Five Element balance</h3>' +
     E.ELEMENTS.map(function(e){ return '<div class="rp-bar"><span class="rp-el-' + e + '"><b>' + e + ' ' + E.EL_ZH[e] + '</b></span><div class="rp-track"><div class="rp-fill rp-bg-' + e + '" style="width:' + (c.elScore[e]/max*100) + '%"></div></div><span class="rp-num">' + (c.elScore[e]/tot*100).toFixed(0) + '%</span></div>'; }).join('') +
     '</div><div><h3>Ten God groups</h3>' +
-    groups.map(function(g){ return '<div class="rp-bar"><span><b>' + g + '</b> <span class="rp-small rp-el-' + gEl[g] + '">' + gEl[g] + '</span></span><div class="rp-track"><div class="rp-fill rp-bg-' + gEl[g] + '" style="width:' + (gmax ? gs[g]/gmax*100 : 0) + '%"></div></div><span class="rp-num">' + gs[g].toFixed(1) + '</span></div>'; }).join('') +
+    groups.map(function(g){ return '<div class="rp-bar"><span><b>' + GROUP_PLAIN[g] + '</b> <span class="rp-small rp-el-' + gEl[g] + '">' + g + ', ' + gEl[g] + '</span></span><div class="rp-track"><div class="rp-fill rp-bg-' + gEl[g] + '" style="width:' + (gmax ? gs[g]/gmax*100 : 0) + '%"></div></div><span class="rp-num">' + gs[g].toFixed(1) + '</span></div>'; }).join('') +
     '</div></div><div class="rp-note">Weighted count: each stem 1, each branch 1 split across its hidden stems, month branch counted double for season.</div>'});
 
   B.push({html: '<h2>6. Natal interactions</h2>' + rpInts(c.natalInteractions) + '<div class="rp-note">Combinations show their traditionally attributed element; transformation is not assumed.</div>'});
@@ -1649,29 +1659,29 @@ function reportBlocks(){
     head: '<tr><th>Age</th><th>Begins</th><th>Pillar</th><th>Stem god</th><th>Branch god</th><th>DM stage</th></tr>',
     rows: c.luck.map(function(l, k){
       var cur = nowMs >= l.startMs && (k===c.luck.length-1 || nowMs < c.luck[k+1].startMs);
-      return '<tr' + (cur?' class="rp-cur"':'') + '><td>' + ageFmt(l.startAge) + (cur?' <span class="rp-tag">Now</span>':'') + '</td><td>' + ymd(l.startMs) + '</td><td class="rp-glyph-s">' + rpStem(l.stem) + rpBranch(l.branch) + '</td><td>' + E.TG_EN[l.stemGod] + '</td><td>' + E.TG_EN[l.branchGod] + '</td><td>' + E.STAGES_EN[l.stage] + ' ' + E.STAGES[l.stage] + '</td></tr>';
+      return '<tr' + (cur?' class="rp-cur"':'') + '><td>' + ageFmt(l.startAge) + (cur?' <span class="rp-tag">Now</span>':'') + '</td><td>' + ymd(l.startMs) + '</td><td class="rp-glyph-s">' + rpStem(l.stem) + rpBranch(l.branch) + '</td><td>' + TGL(l.stemGod) + '</td><td>' + TGL(l.branchGod) + '</td><td>' + STG(l.stage) + ' ' + E.STAGES[l.stage] + '</td></tr>';
     })}});
 
   // timing
   function pil(x){ return rpStem(x.stem) + rpBranch(x.branch); }
   B.push({html: '<h2>8. Timing outlook ' + (T.focused ? 'for ' + fy : 'as of ' + T.todayStr) + '</h2>' +
     '<table class="rp-tbl"><thead><tr><th>Layer</th><th>Pillar</th><th>Ten Gods</th><th>Period</th></tr></thead><tbody>' +
-    (T.luck ? '<tr><td>Luck Pillar</td><td class="rp-glyph-s">' + pil(T.luck) + '</td><td>' + E.TG_EN[T.luck.stemGod] + ' / ' + E.TG_EN[T.luck.branchGod] + '</td><td>' + T.luck.startYear + ' to ' + T.luck.endYear + '</td></tr>' : '') +
-    '<tr><td>Year</td><td class="rp-glyph-s">' + pil(T.year) + '</td><td>' + E.TG_EN[T.year.stemGod] + ' / ' + E.TG_EN[T.year.branchGod] + '</td><td>' + T.year.year + ' ' + T.year.animal + ', from Li Chun</td></tr>' +
-    '<tr><td>Month</td><td class="rp-glyph-s">' + pil(T.months[0]) + '</td><td>' + E.TG_EN[T.months[0].stemGod] + ' / ' + E.TG_EN[T.months[0].branchGod] + '</td><td>From ' + T.months[0].start + ', ' + T.months[0].term + '</td></tr>' +
+    (T.luck ? '<tr><td>Luck Pillar</td><td class="rp-glyph-s">' + pil(T.luck) + '</td><td>' + TGL(T.luck.stemGod) + ' / ' + TGL(T.luck.branchGod) + '</td><td>' + T.luck.startYear + ' to ' + T.luck.endYear + '</td></tr>' : '') +
+    '<tr><td>Year</td><td class="rp-glyph-s">' + pil(T.year) + '</td><td>' + TGL(T.year.stemGod) + ' / ' + TGL(T.year.branchGod) + '</td><td>' + T.year.year + ' ' + T.year.animal + ', from Li Chun</td></tr>' +
+    '<tr><td>Month</td><td class="rp-glyph-s">' + pil(T.months[0]) + '</td><td>' + TGL(T.months[0].stemGod) + ' / ' + TGL(T.months[0].branchGod) + '</td><td>From ' + T.months[0].start + ', ' + T.months[0].term + '</td></tr>' +
     '</tbody></table><h3>Active interactions with the natal chart</h3>' + rpInts(T.nowInts) +
-    (T.next ? '<h3>Next Luck Pillar: ' + T.next.gz + ', begins ' + T.next.startStr + ' (age ' + ageFmt(T.next.startAge) + ')</h3><div class="rp-small" style="margin-bottom:4px">' + E.TG_EN[T.next.stemGod] + ' / ' + E.TG_EN[T.next.branchGod] + '</div>' + rpInts(T.next.ints) : '')});
+    (T.next ? '<h3>Next Luck Pillar: ' + T.next.gz + ', begins ' + T.next.startStr + ' (age ' + ageFmt(T.next.startAge) + ')</h3><div class="rp-small" style="margin-bottom:4px">' + TGL(T.next.stemGod) + ' / ' + TGL(T.next.branchGod) + '</div>' + rpInts(T.next.ints) : '')});
 
   B.push({table: {title: '<h2>9. Annual pillars ' + T.years[0].a.year + ' to ' + T.years[T.years.length-1].a.year + '</h2>',
     head: '<tr><th>Year</th><th>Pillar</th><th>Ten Gods</th><th>Luck</th><th>Interactions with natal and Luck Pillar</th></tr>',
     rows: T.years.map(function(r){
-      return '<tr' + (r.a.year===cby?' class="rp-cur"':'') + '><td>' + r.a.year + '<div class="rp-small">' + r.a.animal + '</div></td><td class="rp-glyph-s">' + pil(r.a) + '</td><td>' + E.TG_EN[r.a.stemGod] + '<div class="rp-small">' + E.TG_EN[r.a.branchGod] + '</div></td><td>' + (r.luck ? r.luck.gz : 'None') + (r.change ? '<div class="rp-small">to ' + r.change.gz + ' ' + r.change.startStr + '</div>' : '') + '</td><td>' + rpInts(r.ints) + '</td></tr>';
+      return '<tr' + (r.a.year===cby?' class="rp-cur"':'') + '><td>' + r.a.year + '<div class="rp-small">' + r.a.animal + '</div></td><td class="rp-glyph-s">' + pil(r.a) + '</td><td>' + TGL(r.a.stemGod) + '<div class="rp-small">' + TGL(r.a.branchGod) + '</div></td><td>' + (r.luck ? r.luck.gz : 'None') + (r.change ? '<div class="rp-small">to ' + r.change.gz + ' ' + r.change.startStr + '</div>' : '') + '</td><td>' + rpInts(r.ints) + '</td></tr>';
     })}});
 
   B.push({table: {title: '<h2>10. Monthly pillars ' + (T.focused ? 'of the ' + fy + ' year' : 'for the next 12 months') + '</h2>',
     head: '<tr><th>Begins</th><th>Solar term</th><th>Pillar</th><th>Ten Gods</th><th>Interactions with natal, Luck and year</th></tr>',
     rows: T.months.map(function(m){
-      return '<tr><td>' + m.start + '</td><td>' + m.term + '<div class="rp-small">' + m.termZh + '</div></td><td class="rp-glyph-s">' + pil(m) + '</td><td>' + E.TG_EN[m.stemGod] + '<div class="rp-small">' + E.TG_EN[m.branchGod] + '</div></td><td>' + rpInts(m.ints) + '</td></tr>';
+      return '<tr><td>' + m.start + '</td><td>' + m.term + '<div class="rp-small">' + m.termZh + '</div></td><td class="rp-glyph-s">' + pil(m) + '</td><td>' + TGL(m.stemGod) + '<div class="rp-small">' + TGL(m.branchGod) + '</div></td><td>' + rpInts(m.ints) + '</td></tr>';
     })}});
 
   B.push({html: '<h2>Method</h2><div class="rp-method">' +
@@ -1790,8 +1800,8 @@ function chartText(){
   out.push('Pillar | Stem (god) | Branch | Hidden stems | DM stage | Na Yin');
   c.pillars.forEach(function(p){
     if(p.missing){ out.push(p.label + ' | unknown'); return; }
-    out.push(p.label + ' | ' + p.stem + ' ' + p.stemPy + ' ' + polEl(p.stemEl,p.stemYang) + ' (' + E.TG_EN[p.stemGod] + ') | ' + p.branch + ' ' + p.branchPy + ' ' + p.animal + ' | ' +
-      p.hidden.map(function(h){ return h.stem + ' ' + E.TG_EN[h.god]; }).join(', ') + ' | ' + E.STAGES_EN[p.stage] + ' ' + E.STAGES[p.stage] + ' | ' + p.nayin[0] + ' ' + p.nayin[1]);
+    out.push(p.label + ' | ' + p.stem + ' ' + p.stemPy + ' ' + polEl(p.stemEl,p.stemYang) + ' (' + TGL(p.stemGod) + ') | ' + p.branch + ' ' + p.branchPy + ' ' + p.animal + ' | ' +
+      p.hidden.map(function(h){ return h.stem + ' ' + TGL(h.god); }).join(', ') + ' | ' + STG(p.stage) + ' ' + E.STAGES[p.stage] + ' | ' + p.nayin[0] + ' ' + p.nayin[1]);
   });
   out.push('');
   out.push('Day Master: ' + c.dm + ' ' + polEl(c.dmEl, c.dmYang) + '. Season: ' + c.season.en + ' ' + c.season.zh + ' (' + c.monthEl + ' month). Support ratio ' + (c.ratio*100).toFixed(0) + '% (' + c.support.toFixed(1) + ' of ' + (c.elTotal-1).toFixed(1) + ' weighted points, Day Master stem excluded), ' + c.verdict + '.');
@@ -1803,28 +1813,28 @@ function chartText(){
   out.push('  Not so good side: ' + VT.traits.cons.join('; '));
   out.push('  ' + VT.el + ' twist: ' + VT.twist[0] + '; flip side: ' + VT.twist[1]);
   var TX = timing(c), SX = strengthChart(c, TX);
-  out.push('Ten God strength (share of strongest), natal / ' + SX.year + ': ' + SX.rows.map(function(r){ return E.TG_EN[r.god] + ' ' + r.nat + '/' + r.yr; }).join(', '));
+  out.push('Ten God strength (share of strongest), natal / ' + SX.year + ': ' + SX.rows.map(function(r){ return TGL(r.god) + ' ' + r.nat + '/' + r.yr; }).join(', '));
   out.push(quickText(quickReading(c, TX, SX)));
   var tot = 0; E.ELEMENTS.forEach(function(e){ tot += c.elScore[e]; });
   out.push('Elements (weighted): ' + E.ELEMENTS.map(function(e){ return e + ' ' + (c.elScore[e]/tot*100).toFixed(0) + '%'; }).join(', '));
   out.push('Natal interactions: ' + (c.natalInteractions.length ? c.natalInteractions.map(function(x){ return x.type + ' ' + x.text + (x.note?' ('+x.note+')':''); }).join('; ') : 'none'));
   out.push('');
   out.push('Luck Pillars (' + (c.luckForward?'forward':'reverse') + ', start ' + c.yun.y + 'y ' + c.yun.m + 'm ' + c.yun.d + 'd):');
-  c.luck.forEach(function(l){ out.push('  Age ' + ageFmt(l.startAge) + ' | ' + ymd(l.startMs) + ' to ' + l.endYear + ' | ' + l.gz + ' | ' + E.TG_EN[l.stemGod] + ' / ' + E.TG_EN[l.branchGod]); });
+  c.luck.forEach(function(l){ out.push('  Age ' + ageFmt(l.startAge) + ' | ' + ymd(l.startMs) + ' to ' + l.endYear + ' | ' + l.gz + ' | ' + TGL(l.stemGod) + ' / ' + TGL(l.branchGod)); });
   var T = timing(c);
   out.push('');
   out.push(T.focused ? 'TIMING FOR FOCUS YEAR ' + state.focusYear + ' (from ' + T.todayStr + ')' : 'CURRENT AND UPCOMING TIMING (as of ' + T.todayStr + ')');
-  out.push('Now: Luck ' + (T.luck ? T.luck.gz + ' (' + E.TG_EN[T.luck.stemGod] + ' / ' + E.TG_EN[T.luck.branchGod] + ', ' + T.luck.startYear + ' to ' + T.luck.endYear + ')' : 'none yet') +
-    ' | Year ' + T.year.year + ' ' + T.year.gz + ' (' + E.TG_EN[T.year.stemGod] + ' / ' + E.TG_EN[T.year.branchGod] + ')' +
-    ' | Month ' + T.months[0].gz + ' from ' + T.months[0].start + ' (' + E.TG_EN[T.months[0].stemGod] + ' / ' + E.TG_EN[T.months[0].branchGod] + ')');
+  out.push('Now: Luck ' + (T.luck ? T.luck.gz + ' (' + TGL(T.luck.stemGod) + ' / ' + TGL(T.luck.branchGod) + ', ' + T.luck.startYear + ' to ' + T.luck.endYear + ')' : 'none yet') +
+    ' | Year ' + T.year.year + ' ' + T.year.gz + ' (' + TGL(T.year.stemGod) + ' / ' + TGL(T.year.branchGod) + ')' +
+    ' | Month ' + T.months[0].gz + ' from ' + T.months[0].start + ' (' + TGL(T.months[0].stemGod) + ' / ' + TGL(T.months[0].branchGod) + ')');
   out.push('Now interactions with natal: ' + intsPlain(T.nowInts));
-  if(T.next) out.push('Next Luck Pillar: ' + T.next.gz + ' starts ' + T.next.startStr + ' (age ' + ageFmt(T.next.startAge) + '), ' + E.TG_EN[T.next.stemGod] + ' / ' + E.TG_EN[T.next.branchGod] + '. Interactions with natal: ' + intsPlain(T.next.ints));
+  if(T.next) out.push('Next Luck Pillar: ' + T.next.gz + ' starts ' + T.next.startStr + ' (age ' + ageFmt(T.next.startAge) + '), ' + TGL(T.next.stemGod) + ' / ' + TGL(T.next.branchGod) + '. Interactions with natal: ' + intsPlain(T.next.ints));
   out.push('');
   out.push('Years:');
-  T.years.forEach(function(r){ out.push('  ' + r.a.year + ' ' + r.a.gz + ' ' + r.a.animal + ' | ' + E.TG_EN[r.a.stemGod] + ' / ' + E.TG_EN[r.a.branchGod] + ' | Luck ' + (r.luck?r.luck.gz:'none') + (r.change?' (changes to ' + r.change.gz + ' on ' + r.change.startStr + ')':'') + ' | ' + intsPlain(r.ints)); });
+  T.years.forEach(function(r){ out.push('  ' + r.a.year + ' ' + r.a.gz + ' ' + r.a.animal + ' | ' + TGL(r.a.stemGod) + ' / ' + TGL(r.a.branchGod) + ' | Luck ' + (r.luck?r.luck.gz:'none') + (r.change?' (changes to ' + r.change.gz + ' on ' + r.change.startStr + ')':'') + ' | ' + intsPlain(r.ints)); });
   out.push('');
   out.push('Months (start dates in China time; interactions checked against natal, Luck and year):');
-  T.months.forEach(function(m){ out.push('  ' + m.start + ' ' + m.term + ' | ' + m.gz + ' | ' + E.TG_EN[m.stemGod] + ' / ' + E.TG_EN[m.branchGod] + ' | ' + intsPlain(m.ints)); });
+  T.months.forEach(function(m){ out.push('  ' + m.start + ' ' + m.term + ' | ' + m.gz + ' | ' + TGL(m.stemGod) + ' / ' + TGL(m.branchGod) + ' | ' + intsPlain(m.ints)); });
   return out.join('\n');
 }
 function copyText(){
@@ -1876,6 +1886,30 @@ state.example = true; fillSaved(); updateHint();
 if(typeof Solar === 'undefined'){
   $('results').innerHTML = '<section class="panel sect"><p class="empty">The calendar engine did not load. Check the connection and reload the page.</p></section>';
 } else { run(); }
+
+/* Open a chart from a link, for Bry's client readings:
+   #chart&name=HW&date=1997-01-23&time=05:27 (or u=1 for unknown)&g=F&city=Kamloops, BC, Canada&lon=-120.3273&tz=America/Vancouver&year=2027
+   Fills the form, draws the chart and points to the PDF button. It never starts the AI overview. */
+function openFromLink(){
+  var h = location.hash || ''; if(h.indexOf('#chart') !== 0 || typeof Solar === 'undefined') return;
+  var q = {}; h.slice(1).split('&').forEach(function(kv){ var i = kv.indexOf('='); if(i > 0) q[decodeURIComponent(kv.slice(0,i))] = decodeURIComponent(kv.slice(i+1).replace(/\+/g,' ')); });
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(q.date || '')) return;
+  var lon = parseFloat(q.lon); if(!q.tz || isNaN(lon)) return;
+  $('f-name').value = q.name || ''; fdate.value = q.date;
+  var unk = q.u === '1' || !q.time; $('f-unknown').checked = unk; $('f-time').disabled = unk; $('f-time').value = unk ? '' : q.time;
+  setGender(q.g === 'F' ? 'F' : 'M');
+  place = {label: q.city || 'Birth place', lon: lon, tz: q.tz};
+  $('f-manual').checked = false; $('custom').hidden = true; sel.disabled = false; sel.value = place.label;
+  state.example = false; updateHint(); run();
+  var fy = parseInt(q.year, 10), c = state.chart;
+  if(c && fy >= c.input.y && fy <= c.input.y + 100){
+    state.focusYear = fy; var lk = null; c.luck.forEach(function(l,i){ if(Date.UTC(fy,1,10) >= l.startMs) lk = i; });
+    if(lk !== null){ state.luckIdx = lk; state.year = fy; } render();
+  }
+  setTimeout(function(){ var b = $('b-pdf'); if(b){ b.scrollIntoView({behavior:'smooth', block:'center'}); b.classList.add('pulse'); } }, 400);
+}
+openFromLink();
+window.addEventListener('hashchange', openFromLink);
 })();
 </script>
 
