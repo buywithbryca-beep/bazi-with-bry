@@ -921,7 +921,7 @@ function render(){
     '<div class="rh">What it is for you (Ten God)</div>' + cells(function(p){ return p.key==='day' ? '<span class="god">Day Master<span class="zh">日主</span></span>' : god(p.stemGod, true); }) +
     '<div class="rh">Heavenly Stem</div>' + P.map(function(p){ return p.missing ? '<div class="missing" style="grid-row:span 2">Hour unknown</div>' : '<div class="bg-' + p.stemEl + '"><div class="glyph zh el-' + p.stemEl + '">' + p.stem + '</div><div class="gsub">' + p.stemPy + ', ' + polEl(p.stemEl, p.stemYang) + '</div></div>'; }).join('') +
     '<div class="rh">Earthly Branch</div>' + P.map(function(p){ return p.missing ? '' : '<div class="bg-' + p.branchEl + '"><div class="glyph zh el-' + p.branchEl + '">' + p.branch + '</div><div class="gsub">' + p.branchPy + ', ' + p.animal + ', ' + p.branchEl + '</div></div>'; }).join('') +
-    '<div class="rh">Hidden stems</div>' + cells(function(p){ return '<div class="hidlist">' + p.hidden.map(function(h){ return '<div class="hid"><span class="zh el-' + h.el + '">' + h.stem + '</span><span>' + E.TG_ABBR[h.god] + '</span><span class="zh gsub">' + h.god + '</span></div>'; }).join('') + '</div>'; }) +
+    '<div class="rh">Hidden stems</div>' + cells(function(p){ return '<div class="hidlist">' + p.hidden.map(function(h){ return '<div class="hid"><span class="zh el-' + h.el + '">' + h.stem + '</span><span>' + (TG_PLAIN[h.god] || E.TG_EN[h.god]) + '</span><span class="zh gsub">' + E.TG_EN[h.god] + ' ' + h.god + '</span></div>'; }).join('') + '</div>'; }) +
     '<div class="rh">Your energy here (life stage)</div>' + cells(function(p){ return STG(p.stage) + '<div class="gsub zh">' + E.STAGES[p.stage] + '</div>'; }) +
     '<div class="rh">Self seat</div>' + cells(function(p){ return STG(p.selfStage) + '<div class="gsub zh">' + E.STAGES[p.selfStage] + '</div>'; }) +
     '<div class="rh last">Sound image (Na Yin)</div>' + cells(function(p){ return p.nayin[1] + '<div class="gsub zh">' + p.nayin[0] + '</div>'; }, 'last') +
@@ -1028,7 +1028,7 @@ function render(){
     return '<button type="button" class="yp" data-year="' + a.year + '" aria-pressed="' + (a.year===state.year) + '">' +
       '<span class="y mono">' + a.year + (a.year===nowYear?' <span class="now">Now</span>':'') + '</span>' +
       '<span class="glyph zh"><span class="el-' + a.stemEl + '">' + a.stem + '</span><span class="el-' + a.branchEl + '">' + a.branch + '</span></span>' +
-      '<span class="gg">' + E.TG_ABBR[a.stemGod] + ' / ' + E.TG_ABBR[a.branchGod] + '<br>' + a.animal + '</span></button>';
+      '<span class="gg" title="' + TGL(a.stemGod) + ' / ' + TGL(a.branchGod) + '">' + TG_PLAIN[a.stemGod] + '<br>' + TG_PLAIN[a.branchGod] + '<br>' + a.animal + '</span></button>';
   }).join('') + '</div></section>';
 
   // battleground
