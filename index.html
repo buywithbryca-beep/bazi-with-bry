@@ -971,7 +971,7 @@ function render(){
   for(var yq = c.input.y; yq <= c.input.y + 100; yq++) qOpts += '<option value="' + yq + '"' + (yq===fyQ?' selected':'') + '>' + yq + ' ' + E.yearGanzhi(yq) + (yq===cbyQ?' (current)':'') + '</option>';
   html += '<section class="panel sect" id="quick"><div class="sect-h"><h2>Reading for ' + fyQ + '</h2><span class="zh">十神 流年</span><span class="aside"><label class="lab" for="qr-year" style="margin-right:6px">Year</label><select id="qr-year" class="mini-sel">' + qOpts + '</select></span></div>' +
     '<div class="qgrid"><div><h3 class="qr-h" style="margin-top:0">Ten God strength</h3>' + strengthHTML(SQ) +
-    '<p class="hint" style="margin-top:10px">Each Ten God as a share of the strongest (100%). Natal is the birth chart; ' + fyQ + ' adds the year pillar (comparable to Joey Yap\'s Annual column); ' + fyQ + ' + Luck also adds the Luck Pillar in force. Day Master included, month branch counted double, hidden stems weighted evenly, four season multiplier, square root scale.</p></div>' +
+    '<p class="hint" style="margin-top:10px">Each Ten God as a share of the strongest (100%). Natal is the birth chart; ' + fyQ + ' adds the year pillar to the birth chart (our own method: other calculators weight the year differently, so their annual figures will not match); ' + fyQ + ' + Luck also adds the Luck Pillar in force. Day Master included, month branch counted double, hidden stems weighted evenly, four season multiplier, square root scale.</p></div>' +
     '<div>' + quickHTML(QQ) + '</div></div>' + aiBoxHTML() + requestBoxHTML() + '</section>';
 
   // elements + ten gods
@@ -1258,6 +1258,8 @@ function vietNote(v){
 /* ---------- Ten God strength chart ---------- */
 var TG_ORDER = ['比肩','劫财','食神','伤官','偏财','正财','七杀','正官','偏印','正印'];
 // Calibrated Nov 22, 2026 against Joey Yap's natal Ten Profile percentages on three charts (error cut from 201 to 58 points).
+// The year columns are NOT calibrated. Nov 26, 2026: tested against Joey Yap's Annual column on five charts (BRY, JC, AT, MB for 2027; AT for 2026).
+// His Annual re-weights the whole chart for the year in a way no tested rule reproduced out of sample, so the year columns stay a plain addition of the year pillar.
 // Season by the four seasons of the month branch (寅卯辰 spring Wood, 巳午未 summer Fire, 申酉戌 autumn Metal, 亥子丑 winter Water).
 var SEASON_EL = {'寅':'Wood','卯':'Wood','辰':'Wood','巳':'Fire','午':'Fire','未':'Fire','申':'Metal','酉':'Metal','戌':'Metal','亥':'Water','子':'Water','丑':'Water'};
 function seasonMult(c, el){
