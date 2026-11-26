@@ -1929,6 +1929,23 @@ state.example = true; fillSaved(); updateHint();
 if(typeof Solar === 'undefined'){
   $('results').innerHTML = '<section class="panel sect"><p class="empty">The calendar engine did not load. Check the connection and reload the page.</p></section>';
 } else { run(); }
+// The example keeps its "Sample chart" label in the results, but the Name field starts empty,
+// so a typed name is never joined to the example label.
+$('f-name').value = ''; $('f-name').placeholder = 'e.g. Jane Smith';
+
+// A name typed after Calculate applies straight away, so the report and its file name
+// always carry the name in the field. Only for a calculated chart, never the example.
+(function(){
+  var t = null;
+  $('f-name').addEventListener('input', function(){
+    clearTimeout(t);
+    t = setTimeout(function(){
+      if(!state.chart || state.example) return;
+      state.chart.input.name = $('f-name').value.trim();
+      render();
+    }, 300);
+  });
+})();
 
 /* Open a chart from a link, for Bry's client readings:
    #chart&name=HW&date=1997-01-23&time=05:27 (or u=1 for unknown)&g=F&city=Kamloops, BC, Canada&lon=-120.3273&tz=America/Vancouver&year=2027
